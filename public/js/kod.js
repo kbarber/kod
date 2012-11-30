@@ -131,6 +131,7 @@ function Game() {
   this.commands = new Commands();
   this.client = new Client(this);
   this.images = {};
+  this.worldView = null;
 
   this.on = function(cmd, ver, func) {
     this.commands.registerCommand(cmd, ver, func);
@@ -151,6 +152,22 @@ function Game() {
       this.loadImage(key, images[key]);
     };
   };
+
+  this.drawView = function(view) {
+    var wv = this.worldView;
+    for(var y = 0; y < view.length; y++) {
+      var row = view[y];
+      for(var x = 0; x < row.length; x++) {
+        var cell = row[x];
+        var images = cell['images'];
+
+        for(var image in images) {
+          var name = images[image];
+          wv.drawTile(g.images[name], x, y);
+        };
+      }
+    }
+  };
 };
 
 g = new Game();
@@ -170,18 +187,6 @@ g.on("draw view", 1, function(pld) {
   g.loadImages(pld.images);
 
   setTimeout(function() {
-    var wv = g.worldView;
-    for(var y = 0; y < view.length; y++) {
-      var row = view[y];
-      for(var x = 0; x < row.length; x++) {
-        var cell = row[x];
-        var images = cell['images'];
-
-        for(var image in images) {
-          var name = images[image];
-          wv.drawTile(g.images[name], x, y);
-        };
-      }
-    }
+    g.drawView(pld.view);
   }, 3000);
 });
