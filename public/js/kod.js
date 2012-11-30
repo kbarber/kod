@@ -1,3 +1,8 @@
+function log(title, data) {
+  js = JSON.stringify(data);
+  console.log("%s\n  [%s]", title, js);
+};
+
 /**
  * An object that represents the visible world.
  *
@@ -25,52 +30,80 @@ function WorldView(canvasId) {
    */
   this.drawTile = function(obj, x, y) {
     this.ctx.drawImage(obj, x*32, y*32);
-  }
-}
+  };
+};
 var wv = new WorldView("world");
 
 /**
- * KodServer connection object.
+ * Server connection object.
  *
- * @param {String} url WebSocket URL for KodServer
+ * @param {String} [url] WebSocket URL for Server, defaults to requested
+ *                       hostname and port.
  */
-function KodServer(url) {
+function Server(url) {
   var self = this;
-  this.url = url
+
+  if(!url) { url = "ws://" + window.document.location.host };
+  this.url = url;
+
+  log('connecting to server', {"url":this.url});
+
   this.ws = new WebSocket(this.url);
   this.ws.onopen = function() {
-    console.log("socket open: " + url);
-    self.login();
-  }
+    log('socket open', {"url":url});
+    self.login("ken", "ken");
+  };
+  this.ws.onerror = function() {
+    log('unable to open socket', {"url": url});
+  };
+  this.ws.onclose = function() {
+    log('websocket closed', {"url": url});
+  };
   this.ws.onmessage = function(msg) {
-    rcv = JSON.parse(msg.data);
-    console.log("On message: " + rcv);
-  }
-
-  this.login = function() {
-    cmd = {
-      "command":"login",
-      "version":1,
-      "payload":{
-        "username":"ken",
-        "password":"ken"
-      }
+    try {
+      var json = JSON.parse(msg.data);
+    } catch(e) {
+      log('ws message invalid json', {"data": msg.data});
     };
+    log('received message', {"url": url, "message": json});
+
+    if(json.c && json.v && json.p) {
+      self.rcvCommand(json.c, json.v, json.p);
+    } else {
+      log('not a valid message', {'msg': json});
+    };
+  };
+
+  this.login = function(username, password) {
+    this.sendCommand("login", 1, {
+      "username": username,
+      "password": password
+    });
+  };
+
+  this.sendCommand = function(c, v, p) {
+    cmd = {"c": c, "v": v, "p": p};
+    log('send command', cmd);
     snd = JSON.stringify(cmd);
-    this.ws.send(snd);
-  }
+    this.ws.send(snd, function() {
+      log("error sending command", {"command": snd});
+    });
+  };
+
+  this.rcvCommand = function(c, v, p) {
+    log('received command', {"c": c, "v": v, "p": p});
+  };
 
   this.close = function() {
     this.ws.close();
-  }
-}
+  };
+};
 
-
-var ks = new KodServer("ws://localhost:7778/");
+var s = new Server();
 
 function loadedImage(str) {
-  console.log("Loaded image: " + str);
-}
+  log('loaded image', {"name": str});
+};
 
 /* Prepare images */
 var grass = new Image;
@@ -110,5 +143,4 @@ setTimeout(function() {
   for (x = 5; x < 12; x++) {
     wv.drawTile(cs, x, 5);
   }
-}, 3000)
-
+}, 3000);
