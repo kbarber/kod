@@ -3,17 +3,40 @@ function log(title, data) {
   console.log("%s\n  [%s]", title, js);
 };
 
+function Commands() {
+  var self = this;
+
+  this.commands = {};
+  this.registerCommand = function(cmd, ver, func) {
+    if(!this.commands[cmd]) {
+      this.commands[cmd] = {};
+    };
+    this.commands[cmd][ver] = func;
+  };
+
+  this.runCommand = function(c, v, p) {
+    if(this.commands[c] && this.commands[c][v]) {
+      this.commands[c][v](p);
+    } else {
+      log('unknown command', {"c": c, "v": v, "p": p});
+    };
+  };
+}
+
 /**
  * An object that represents the visible world.
  *
  * @param {String} canvasId
  */
-function WorldView(canvasId) {
+function WorldView(canvasId, width, height) {
   this.world = document.getElementById(canvasId);
-  this.world.width = 400;
-  this.world.height = 400; 
-  this.world.style.width  = '400px';
-  this.world.style.height = '400px';
+  this.width = width;
+  this.height = height;
+  this.tileWidth = 32;
+  this.world.width = this.width * this.tileWidth;
+  this.world.height = this.height * this.tileWidth;
+  this.world.style.width  = this.world.width + 'px';
+  this.world.style.height = this.world.height + 'px';
   this.ctx = world.getContext("2d");
 
   /**
@@ -29,19 +52,21 @@ function WorldView(canvasId) {
    * @param {Number} y Y coordinate
    */
   this.drawTile = function(obj, x, y) {
-    this.ctx.drawImage(obj, x*32, y*32);
+    this.ctx.drawImage(obj, x * this.tileWidth, y * this.tileWidth);
   };
 };
-var wv = new WorldView("world");
 
 /**
- * Server connection object.
+ * Client connection object.
  *
- * @param {String} [url] WebSocket URL for Server, defaults to requested
+ * @param {String} [url] WebSocket URL, defaults to requested
  *                       hostname and port.
  */
-function Server(url) {
+function Client(game, url) {
   var self = this;
+
+  this.game = game;
+  this.commands = this.game.commands;
 
   if(!url) { url = "ws://" + window.document.location.host };
   this.url = url;
@@ -92,6 +117,7 @@ function Server(url) {
 
   this.rcvCommand = function(c, v, p) {
     log('received command', {"c": c, "v": v, "p": p});
+    this.commands.runCommand(c, v, p);
   };
 
   this.close = function() {
@@ -99,48 +125,63 @@ function Server(url) {
   };
 };
 
-var s = new Server();
+function Game() {
+  var self = this;
 
-function loadedImage(str) {
-  log('loaded image', {"name": str});
+  this.commands = new Commands();
+  this.client = new Client(this);
+  this.images = {};
+
+  this.on = function(cmd, ver, func) {
+    this.commands.registerCommand(cmd, ver, func);
+  };
+
+  this.createView = function(id, width, height) {
+    this.worldView = new WorldView(id, width, height);
+  };
+
+  this.loadImage = function(name, details) {
+    log("loading image", {"name": name, "details": details});
+    this.images[name] = new Image;
+    this.images[name].src = details.href;
+  };
+
+  this.loadImages = function(images) {
+    for(var key in images) {
+      this.loadImage(key, images[key]);
+    };
+  };
 };
 
-/* Prepare images */
-var grass = new Image;
-grass.onload = loadedImage("grass");
-grass.src = "img/grass.png";
+g = new Game();
 
-var knight = new Image;
-grass.onload = loadedImage("knight");
-knight.src = "img/knight.png";
+g.on("create view", 1, function(pld) {
+  g.createView("world", 12, 12);
+  g.client.sendCommand("register view", 1, {
+    "width": 12,
+    "height": 12
+  });
+});
 
-var cthulhu = new Image;
-cthulhu.onload = loadedImage("cthulhu");
-cthulhu.src = "img/cthulhu.png";
+g.on("draw view", 1, function(pld) {
+  var images = pld.images;
+  var view = pld.view;
 
-var rabbit = new Image;
-rabbit.onload = loadedImage("rabbit");
-rabbit.src = "img/rabbit.png";
+  g.loadImages(pld.images);
 
-var cs = new Image;
-cs.onload = loadedImage("cobblestone");
-cs.src = "img/cobblestone.png";
+  setTimeout(function() {
+    var wv = g.worldView;
+    for(var y = 0; y < view.length; y++) {
+      var row = view[y];
+      for(var x = 0; x < row.length; x++) {
+        var cell = row[x];
+        var images = cell['images'];
 
-setTimeout(function() {
-  for (x = 0; x < 12; x++) {
-    for (y = 0; y < 12; y++) {
-      wv.drawTile(grass, x, y);
+        for(var image in images) {
+          var name = images[image];
+          wv.drawTile(g.images[name], x, y);
+        };
+      }
     }
-  }
-
-  wv.drawTile(knight, 0, 0);
-  wv.drawTile(cthulhu, 1, 0);
-  wv.drawTile(rabbit, 3, 0);
-
-  for (y = 0; y < 12; y++) {
-    wv.drawTile(cs, 5, y);
-  }
-  for (x = 5; x < 12; x++) {
-    wv.drawTile(cs, x, 5);
-  }
-}, 3000);
+  }, 3000);
+});
