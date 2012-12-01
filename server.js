@@ -138,9 +138,9 @@ s.on("register view", 1, function(c, pld) {
   var gk = {images: ['grass', 'knight']};
   var gr = {images: ['grass']};
   var cs = {images: ['cobblestone']};
-  rb = {images: ['grass', 'rabbit']};
+  var rb = {images: ['grass', 'rabbit']};
 
-  world = [
+  var world = [
     [gk, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
     [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
     [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
