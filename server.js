@@ -107,7 +107,17 @@ function Server(port) {
     , express = require('express')
     , app = express();
 
-  app.use(express.static(__dirname + '/public'));
+  app.configure(function() {
+    app.use(express.static(__dirname + '/public'));
+    app.set('view engine', 'ejs');
+    app.set('views', __dirname + '/views');
+  });
+
+  app.get("/status", function(req, res) {
+    res.locals.clientGroup = self.clientGroup;
+    res.render("status");
+  });
+
   var svr = http.createServer(app);
   svr.listen(this.port);
 
@@ -125,6 +135,49 @@ function Server(port) {
 };
 
 var s = new Server();
+
+/*
+var images = [
+  {
+    name: "grass",
+    href: "/img/grass.png"
+  },
+  {
+    name: "knight",
+    href: "/img/knight.png"
+  },
+  {
+    name: "cthulhu",
+    href: "/img/cthulhu.png"
+  },
+  {
+    name: "rabbit",
+    href: "/img/rabbit.png"
+  },
+  {
+    name: "cobblestone",
+    href: "/img/cobblestone.png"
+  }
+]
+*/
+
+var images = [];
+
+// Retrieve
+var MongoClient = require('mongodb').MongoClient;
+
+// Connect to the db
+MongoClient.connect("mongodb://localhost:27017/kod", function(err, db) {
+  if(err) { return log('failure to connect', {"err":err}) };
+  log('mongodb connected');
+
+  var collection = db.collection('images');
+  //collection.insert(images, {w:1}, function(err, result) {});
+  collection.find().toArray(function(err, items) {
+    images = items;
+    log('found images', {"images": images});
+  });
+});
 
 s.on("login", 1, function(c, pld) {
   if(c.login(pld.username, pld.password)) {
@@ -156,23 +209,7 @@ s.on("register view", 1, function(c, pld) {
   ]
 
   c.sendCommand('draw view', 1, {
-    images: {
-      grass: {
-        href: "/img/grass.png"
-      },
-      knight: {
-        href: "/img/knight.png"
-      },
-      cthulhu: {
-        href: "/img/cthulhu.png"
-      },
-      rabbit: {
-        href: "/img/rabbit.png"
-      },
-      cobblestone: {
-        href: "/img/cobblestone.png"
-      }
-    },
+    images: images,
     view: world
   });
 });

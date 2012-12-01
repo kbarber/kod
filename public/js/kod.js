@@ -142,15 +142,29 @@ function Game() {
     return this.worldView;
   };
 
-  this.loadImage = function(name, details) {
+  this.loadImage = function(name, details, func) {
     log("loading image", {"name": name, "details": details});
     this.images[name] = new Image;
+    this.images[name].onload = func;
     this.images[name].src = details.href;
   };
 
-  this.loadImages = function(images) {
+  this.loadImages = function(images, func) {
+    var icount = images.length;
+
+    /**
+     * A function for counting down image loads.
+     */
+    var imageLoaded = function() {
+      --icount;
+      if(icount == 0) {
+        func();
+      };
+    };
+
     for(var key in images) {
-      this.loadImage(key, images[key]);
+      var image = images[key];
+      this.loadImage(image.name, image, imageLoaded);
     };
   };
 
@@ -185,9 +199,8 @@ g.on("draw view", 1, function(pld) {
   var images = pld.images;
   var view = pld.view;
 
-  g.loadImages(pld.images);
-
-  setTimeout(function() {
+  g.loadImages(pld.images, function() {
+    log('all images loaded');
     g.drawView(pld.view);
-  }, 3000);
+  });
 });
