@@ -135,10 +135,25 @@ s.on("login", 1, function(c, pld) {
 });
 
 s.on("register view", 1, function(c, pld) {
-  gk = {images: ['grass', 'knight']};
-  gr = {images: ['grass']};
-  cs = {images: ['cobblestone']};
+  var gk = {images: ['grass', 'knight']};
+  var gr = {images: ['grass']};
+  var cs = {images: ['cobblestone']};
   rb = {images: ['grass', 'rabbit']};
+
+  world = [
+    [gk, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
+    [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
+    [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
+    [gr, gr, gr, gr, gr, cs, gr, gr, gr, rb, gr, gr],
+    [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
+    [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
+    [gr, gr, gr, gr, gr, cs, cs, cs, cs, cs, cs, cs],
+    [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
+    [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
+    [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
+    [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
+    [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr]
+  ]
 
   c.sendCommand('draw view', 1, {
     images: {
@@ -158,19 +173,6 @@ s.on("register view", 1, function(c, pld) {
         href: "/img/cobblestone.png"
       }
     },
-    view: [
-      [gk, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
-      [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
-      [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
-      [gr, gr, gr, gr, gr, cs, gr, gr, gr, rb, gr, gr],
-      [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
-      [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
-      [gr, gr, gr, gr, gr, cs, cs, cs, cs, cs, cs, cs],
-      [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
-      [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
-      [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
-      [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
-      [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr]
-    ]
+    view: world
   });
 });

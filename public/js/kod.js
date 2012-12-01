@@ -28,10 +28,10 @@ function Commands() {
  *
  * @param {String} canvasId
  */
-function WorldView(canvasId, width, height) {
+function WorldView(canvasId) {
   this.world = document.getElementById(canvasId);
-  this.width = width;
-  this.height = height;
+  this.width = Math.floor(window.document.width / 32) - 1;
+  this.height = Math.floor(window.document.height / 32) - 1;
   this.tileWidth = 32;
   this.world.width = this.width * this.tileWidth;
   this.world.height = this.height * this.tileWidth;
@@ -137,8 +137,9 @@ function Game() {
     this.commands.registerCommand(cmd, ver, func);
   };
 
-  this.createView = function(id, width, height) {
-    this.worldView = new WorldView(id, width, height);
+  this.createView = function(id) {
+    this.worldView = new WorldView(id);
+    return this.worldView;
   };
 
   this.loadImage = function(name, details) {
@@ -173,10 +174,10 @@ function Game() {
 g = new Game();
 
 g.on("create view", 1, function(pld) {
-  g.createView("world", 12, 12);
+  v = g.createView("world");
   g.client.sendCommand("register view", 1, {
-    "width": 12,
-    "height": 12
+    "width": v.width,
+    "height": v.height
   });
 });
 
