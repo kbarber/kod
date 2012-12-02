@@ -20,6 +20,37 @@ function Commands() {
   };
 }
 
+function View(client, universe, width, height) {
+  var self = this;
+
+  this.width = width;
+  this.height = height;
+  this.client = client;
+  this.universe = universe;
+
+  log('create view', {id: client.id, width: width, height: height});
+
+  this.updateViewSize = function(width, height) {
+    this.width = width;
+    this.height = height;
+    log('update view size', {
+      id: this.client.id,
+      width: width,
+      height: height
+    });
+  };
+
+  this.updateViewWidth = function(width) {
+    this.width = width;
+    log('update view width', {id: this.client.id, width: width});
+  };
+
+  this.updateViewHeight = function(height) {
+    this.height = height;
+    log('update view height', {id: this.client.id, height: height});
+  };
+}
+
 function Client(cg, id, ws) {
   var self = this;
 
@@ -35,36 +66,36 @@ function Client(cg, id, ws) {
     try {
       var json = JSON.parse(msg);
     } catch(e) {
-      log('ws message invalid json', {"id": id, "data": msg.data});
+      log('ws message invalid json', {id: id, data: msg.data});
     }
-    log('received message', {"id": id, "msg": json});
+    log('received message', {id: id, msg: json});
 
     if(json.c && json.v && json.p) {
       self.rcvCommand(json.c, json.v, json.p);
     } else {
-      log('not a valid message', {"id": id, "msg": json});
+      log('not a valid message', {id: id, msg: json});
     };
   });
 
   ws.on('close', function() {
-    log('ws close', {"id": id});
+    log('ws close', {id: id});
     self.close();
   });
 
   this.sendCommand = function(c, v, p) {
     cmd = {"c": c, "v": v, "p": p};
-    log('send command', cmd);
+    log('send command', {id: this.id, cmd: cmd});
     snd = JSON.stringify(cmd);
     this.ws.send(snd);
   };
 
   this.rcvCommand = function(c, v, p) {
-    log('received command', {"id": this.id, "cmd": {"c": c, "v": v, "p": p}});
+    log('received command', {id: this.id, cmd: {c: c, v: v, p: p}});
     this.commands.runCommand(this, c, v, p);
   };
 
   this.login = function(username, password) {
-    log('login', {"username": username, "password": password});
+    log('login', {id: this.id, username: username, password: password});
     this.username = username;
     this.loggedIn = true;
     return true;
@@ -127,7 +158,7 @@ function Server(port) {
     var client = self.clientGroup.newClient(ws);
     var id = client.id;
 
-    log('ws connection', {"id":id});
+    log('ws connection', {id: id});
   });
 
   this.on = function(cmd, ver, func) {
@@ -145,7 +176,7 @@ function Mongo(url) {
   this.connect = function(func) {
     MongoClient.connect(this.url, function(err, db) {
       if(err) { return log('failure to connect', {"err":err}) };
-      log('mongodb connected');
+      log('mongodb connected', {url: self.url});
 
       func(db);
     });
@@ -193,7 +224,7 @@ function Universe() {
     var collection = db.collection('images');
     collection.find().toArray(function(err, items) {
       self.images = items;
-      log('found images', {"images": self.images});
+      log('found images', {images: self.images});
     });
   });
 };
@@ -211,6 +242,10 @@ function Game() {
   });
 
   server.on("register view", 1, function(c, pld) {
+    var startX = 1000000;
+    var startY = 1000000;
+
+    var view = new View(c, universe, pld.width, pld.height);
     c.sendCommand('draw view', 1, {
       images: universe.images,
       view: universe.world
