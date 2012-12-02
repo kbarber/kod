@@ -230,6 +230,14 @@ function Universe() {
       log('found images', {images: self.images});
     });
   });
+
+  this.clientView = function(view) {
+    cv = {
+      images: this.images,
+      view: this.world
+    };
+    return cv;
+  };
 };
 
 function Game() {
@@ -249,10 +257,8 @@ function Game() {
     var startY = 1000000;
 
     var view = new View(c, universe, pld.width, pld.height, startX, startY);
-    c.sendCommand('draw view', 1, {
-      images: universe.images,
-      view: universe.world
-    });
+
+    c.sendCommand('draw view', 1, universe.clientView(view));
   });
 };
 
