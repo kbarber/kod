@@ -20,15 +20,18 @@ function Commands() {
   };
 }
 
-function View(client, universe, width, height) {
+function View(client, universe, width, height, x, y) {
   var self = this;
 
   this.width = width;
   this.height = height;
   this.client = client;
   this.universe = universe;
+  this.x = x;
+  this.y = y;
 
-  log('create view', {id: client.id, width: width, height: height});
+  log('create view', {id: client.id, width: width, height: height, x: x, y: y});
+  client.view = this;
 
   this.updateViewSize = function(width, height) {
     this.width = width;
@@ -245,7 +248,7 @@ function Game() {
     var startX = 1000000;
     var startY = 1000000;
 
-    var view = new View(c, universe, pld.width, pld.height);
+    var view = new View(c, universe, pld.width, pld.height, startX, startY);
     c.sendCommand('draw view', 1, {
       images: universe.images,
       view: universe.world

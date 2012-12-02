@@ -8,15 +8,23 @@
      var client = clientGroup.clients[id];
 %>
 <ul>
-<li>Id: <%= id %></li>
-<li>Username: <%= client.username %></li>
-<li>Logged in: <%= client.loggedIn %></li>
-<li>WebSockets:
-<ul>
-<li>Bytes received: <%= client.ws.bytesReceived %></li>
-<li>Protocol version: <%= client.ws.protocolVersion %></li>
-<li>Ready State: <%= client.ws.readyState %></li>
-</ul>
-</li>
+  <li>Id: <%= id %></li>
+  <li>Username: <%= client.username %></li>
+  <li>Logged in: <%= client.loggedIn %></li>
+  <li>WebSockets:
+    <ul>
+      <li>Bytes received: <%= client.ws.bytesReceived %></li>
+      <li>Protocol version: <%= client.ws.protocolVersion %></li>
+      <li>Ready State: <%= client.ws.readyState %></li>
+    </ul>
+  </li>
+  <li>View:
+    <ul>
+      <li>Width: <%= client.view.width %></li>
+      <li>Height: <%= client.view.height %></li>
+      <li>X: <%= client.view.x %></li>
+      <li>Y: <%= client.view.y %></li>
+    </ul>
+  </li>
 </ul>
 <% } %>
