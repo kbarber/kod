@@ -16,7 +16,11 @@ function Commands() {
   };
 
   this.runCommand = function(client, c, v, p) {
-    this.commands[c][v](client, p);
+    if(this.commands[c] && this.commands[c][v]) {
+      this.commands[c][v](client, p);
+    } else {
+      log('unknown command', {id: client.id, c: c, v: v, p: p});
+    };  
   };
 }
 
@@ -223,7 +227,11 @@ function Universe() {
         for(var y = view.y; y < (view.y+view.height); y++) {
           var row = [];
           for(var x = view.x; x < (view.x+view.width); x++) {
-            row.push(lookupDocs[x][y] || {tile: {floor: null}});
+            if(lookupDocs[x] && lookupDocs[x][y]) {
+              row.push(lookupDocs[x][y]);
+            } else {
+              row.push({tile: {floor: 'blank'}});
+            };
           };
           cView.push(row);
         };
@@ -258,6 +266,27 @@ function Game() {
     var view = new View(c, universe, pld.width, pld.height, startX, startY);
 
     universe.clientView(view, function(result) {
+      c.sendCommand('draw view', 1, result);
+    });
+  });
+
+  server.on("move", 1, function(c, pld) {
+    switch(pld.dir) {
+    case "n":
+      c.view.y = c.view.y - 1;
+      break;
+    case "s":
+      c.view.y = c.view.y + 1;
+      break;
+    case "e":
+      c.view.x = c.view.x + 1;
+      break;
+    case "w":
+      c.view.x = c.view.x - 1;
+      break;
+    };
+
+    universe.clientView(c.view, function(result) {
       c.sendCommand('draw view', 1, result);
     });
   });

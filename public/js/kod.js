@@ -182,6 +182,26 @@ function Game() {
   this.client = new Client();
   this.universe = new Universe();
 
+  this.checkKey = function(e) {
+    var e = e || window.event;
+    switch(e.keyCode) {
+    case 37:
+      self.client.sendCommand("move", 1, {dir: "w"});
+      break;
+    case 38:
+      self.client.sendCommand("move", 1, {dir: "n"});
+      break;
+    case 39:
+      self.client.sendCommand("move", 1, {dir: "e"});
+      break;
+    case 40:
+      self.client.sendCommand("move", 1, {dir: "s"});
+      break;
+    };
+  };
+
+  document.onkeydown = this.checkKey;
+
   this.client.on("create view", 1, function(pld) {
     var v = self.universe.view = new View(self.universe, "world");
     self.client.sendCommand("register view", 1, {
