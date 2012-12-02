@@ -200,7 +200,7 @@ g.on("draw view", 1, function(pld) {
   var view = pld.view;
 
   g.loadImages(pld.images, function() {
-    log('all images loaded');
+    log('all images loaded', {"image_count":pld.images.length});
     g.drawView(pld.view);
   });
 });

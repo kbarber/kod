@@ -182,6 +182,26 @@ function Universe() {
   this.mongo = new Mongo("mongodb://localhost:27017/kod");
   this.images = [];
 
+  var gk = {images: ['grass', 'knight']};
+  var gr = {images: ['grass']};
+  var cs = {images: ['cobblestone']};
+  var rb = {images: ['grass', 'rabbit']};
+
+  this.world = [
+    [gk, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
+    [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
+    [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
+    [gr, gr, gr, gr, gr, cs, gr, gr, gr, rb, gr, gr],
+    [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
+    [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
+    [gr, gr, gr, gr, gr, cs, cs, cs, cs, cs, cs, cs],
+    [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
+    [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
+    [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
+    [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
+    [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr]
+  ]
+
   /* Grab images */
   this.mongo.connect(function(db) {
     var collection = db.collection('images');
@@ -193,10 +213,10 @@ function Universe() {
 };
 
 function Game() {
-  var s = new Server();
-  var u = new Universe();
+  var server = new Server();
+  var universe = new Universe();
 
-  s.on("login", 1, function(c, pld) {
+  server.on("login", 1, function(c, pld) {
     if(c.login(pld.username, pld.password)) {
       c.sendCommand('create view', 1, {});
     } else {
@@ -204,30 +224,10 @@ function Game() {
     };
   });
 
-  s.on("register view", 1, function(c, pld) {
-    var gk = {images: ['grass', 'knight']};
-    var gr = {images: ['grass']};
-    var cs = {images: ['cobblestone']};
-    var rb = {images: ['grass', 'rabbit']};
-
-    var world = [
-      [gk, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
-      [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
-      [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
-      [gr, gr, gr, gr, gr, cs, gr, gr, gr, rb, gr, gr],
-      [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
-      [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
-      [gr, gr, gr, gr, gr, cs, cs, cs, cs, cs, cs, cs],
-      [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
-      [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
-      [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
-      [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
-      [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr]
-    ]
-
+  server.on("register view", 1, function(c, pld) {
     c.sendCommand('draw view', 1, {
-      images: u.images,
-      view: world
+      images: universe.images,
+      view: universe.world
     });
   });
 };
