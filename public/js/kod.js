@@ -54,6 +54,21 @@ function WorldView(canvasId) {
   this.drawTile = function(obj, x, y) {
     this.ctx.drawImage(obj, x * this.tileWidth, y * this.tileWidth);
   };
+
+  this.drawView = function(view) {
+    for(var y = 0; y < view.length; y++) {
+      var row = view[y];
+      for(var x = 0; x < row.length; x++) {
+        var cell = row[x];
+        var images = cell['images'];
+
+        for(var image in images) {
+          var name = images[image];
+          this.drawTile(g.images[name], x, y);
+        };
+      }
+    }
+  };
 };
 
 /**
@@ -62,11 +77,10 @@ function WorldView(canvasId) {
  * @param {String} [url] WebSocket URL, defaults to requested
  *                       hostname and port.
  */
-function Client(game, url) {
+function Client(url) {
   var self = this;
 
-  this.game = game;
-  this.commands = this.game.commands;
+  this.commands = new Commands();
 
   if(!url) { url = "ws://" + window.document.location.host };
   this.url = url;
@@ -123,24 +137,17 @@ function Client(game, url) {
   this.close = function() {
     this.ws.close();
   };
-};
-
-function Game() {
-  var self = this;
-
-  this.commands = new Commands();
-  this.client = new Client(this);
-  this.images = {};
-  this.worldView = null;
 
   this.on = function(cmd, ver, func) {
     this.commands.registerCommand(cmd, ver, func);
   };
+};
 
-  this.createView = function(id) {
-    this.worldView = new WorldView(id);
-    return this.worldView;
-  };
+function Universe() {
+  var self = this;
+
+  this.images = {};
+  this.worldView = null;
 
   this.loadImage = function(name, details, func) {
     log("loading image", {"name": name, "details": details});
@@ -167,40 +174,31 @@ function Game() {
       this.loadImage(image.name, image, imageLoaded);
     };
   };
+};
 
-  this.drawView = function(view) {
-    var wv = this.worldView;
-    for(var y = 0; y < view.length; y++) {
-      var row = view[y];
-      for(var x = 0; x < row.length; x++) {
-        var cell = row[x];
-        var images = cell['images'];
+function Game() {
+  var self = this;
 
-        for(var image in images) {
-          var name = images[image];
-          wv.drawTile(g.images[name], x, y);
-        };
-      }
-    }
-  };
+  this.client = new Client();
+  this.universe = new Universe();
+
+  this.client.on("create view", 1, function(pld) {
+    var wv = self.universe.worldView = new WorldView("world");
+    self.client.sendCommand("register view", 1, {
+      "width": wv.width,
+      "height": wv.height
+    });
+  });
+
+  this.client.on("draw view", 1, function(pld) {
+    var images = pld.images;
+    var view = pld.view;
+
+    self.universe.loadImages(pld.images, function() {
+      log('all images loaded', {"image_count":pld.images.length});
+      self.universe.worldView.drawView(pld.view);
+    });
+  });
 };
 
 g = new Game();
-
-g.on("create view", 1, function(pld) {
-  v = g.createView("world");
-  g.client.sendCommand("register view", 1, {
-    "width": v.width,
-    "height": v.height
-  });
-});
-
-g.on("draw view", 1, function(pld) {
-  var images = pld.images;
-  var view = pld.view;
-
-  g.loadImages(pld.images, function() {
-    log('all images loaded', {"image_count":pld.images.length});
-    g.drawView(pld.view);
-  });
-});

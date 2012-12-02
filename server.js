@@ -134,31 +134,6 @@ function Server(port) {
   };
 };
 
-/*
-var images = [
-  {
-    name: "grass",
-    href: "/img/grass.png"
-  },
-  {
-    name: "knight",
-    href: "/img/knight.png"
-  },
-  {
-    name: "cthulhu",
-    href: "/img/cthulhu.png"
-  },
-  {
-    name: "rabbit",
-    href: "/img/rabbit.png"
-  },
-  {
-    name: "cobblestone",
-    href: "/img/cobblestone.png"
-  }
-]
-*/
-
 function Mongo(url) {
   var self = this;
 
@@ -182,16 +157,15 @@ function Universe() {
   this.mongo = new Mongo("mongodb://localhost:27017/kod");
   this.images = [];
 
-  var gk = {images: ['grass', 'knight']};
+  var gk = {images: ['grass']};
   var gr = {images: ['grass']};
   var cs = {images: ['cobblestone']};
-  var rb = {images: ['grass', 'rabbit']};
 
   this.world = [
-    [gk, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
     [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
     [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
-    [gr, gr, gr, gr, gr, cs, gr, gr, gr, rb, gr, gr],
+    [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
+    [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
     [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
     [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
     [gr, gr, gr, gr, gr, cs, cs, cs, cs, cs, cs, cs],
