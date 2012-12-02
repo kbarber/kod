@@ -63,12 +63,9 @@ function View(universe, canvasId) {
       var row = view[y];
       for(var x = 0; x < row.length; x++) {
         var cell = row[x];
-        var images = cell['images'];
+        var floor = cell.tile.floor;
 
-        for(var image in images) {
-          var name = images[image];
-          this.drawTile(this.universe.images[name], x, y);
-        };
+        this.drawTile(this.universe.images[floor], x, y);
       }
     }
   };

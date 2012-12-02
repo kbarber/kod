@@ -192,36 +192,6 @@ function Universe() {
   this.mongo = new Mongo("mongodb://localhost:27017/kod");
   this.images = [];
 
-  var g = {images: ['grass']};
-  var c = {images: ['cobblestone']};
-
-  this.world = [
-    [g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g],
-    [g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g],
-    [g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g],
-    [g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g],
-    [g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g],
-    [g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g],
-    [g,g,g,g,g,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c],
-    [g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g],
-    [g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g],
-    [g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g],
-    [g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g],
-    [g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g],
-    [c,c,c,c,c,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g],
-    [g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g],
-    [g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g],
-    [g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g],
-    [g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g],
-    [g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g],
-    [g,g,g,g,g,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c],
-    [g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g],
-    [g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g],
-    [g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g],
-    [g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g],
-    [g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g]
-  ]
-
   /* Grab images */
   this.mongo.connect(function(db) {
     var collection = db.collection('images');
@@ -231,12 +201,41 @@ function Universe() {
     });
   });
 
-  this.clientView = function(view) {
-    cv = {
-      images: this.images,
-      view: this.world
-    };
-    return cv;
+  this.clientView = function(view, func) {
+    this.mongo.connect(function(db) {
+      var collection = db.collection('map');
+      collection.find({
+        x: {$gte: view.x, $lt: view.x+view.width},
+        y: {$gte: view.y, $lt: view.y+view.height}
+      },{"_id":0}).toArray(function(err, docs) {
+        log('got map from mongodb', {map: docs});
+
+        var lookupDocs = {};
+        for(var i in docs) {
+          var doc = docs[i];
+          if(!lookupDocs[doc.x]) {
+            lookupDocs[doc.x] = {};
+          };
+          lookupDocs[doc.x][doc.y] = doc;
+        };
+
+        var cView = [];
+        for(var y = view.y; y < (view.y+view.height); y++) {
+          var row = [];
+          for(var x = view.x; x < (view.x+view.width); x++) {
+            row.push(lookupDocs[x][y] || {tile: {floor: null}});
+          };
+          cView.push(row);
+        };
+
+        log('cview', {cview: cView});
+
+        func({
+          images: self.images,
+          view: cView
+        });
+      });
+    }); 
   };
 };
 
@@ -258,7 +257,9 @@ function Game() {
 
     var view = new View(c, universe, pld.width, pld.height, startX, startY);
 
-    c.sendCommand('draw view', 1, universe.clientView(view));
+    universe.clientView(view, function(result) {
+      c.sendCommand('draw view', 1, result);
+    });
   });
 };
 
