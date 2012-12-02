@@ -1,7 +1,22 @@
 <title>KoD Status Page</title>
-<h2>Clients</h2>
-<% for(var client in clientGroup.clients) { %>
+<h2>Server</h2>
 <ul>
-<li>Id: <%= client %></li>
+<li>Port: <%= server.port %></li>
+</ul>
+<h2>Clients</h2>
+<% for(var id in clientGroup.clients) {
+     var client = clientGroup.clients[id];
+%>
+<ul>
+<li>Id: <%= id %></li>
+<li>Username: <%= client.username %></li>
+<li>Logged in: <%= client.loggedIn %></li>
+<li>WebSockets:
+<ul>
+<li>Bytes received: <%= client.ws.bytesReceived %></li>
+<li>Protocol version: <%= client.ws.protocolVersion %></li>
+<li>Ready State: <%= client.ws.readyState %></li>
+</ul>
+</li>
 </ul>
 <% } %>

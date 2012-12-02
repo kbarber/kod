@@ -115,6 +115,7 @@ function Server(port) {
 
   app.get("/status", function(req, res) {
     res.locals.clientGroup = self.clientGroup;
+    res.locals.server = self;
     res.render("status");
   });
 
