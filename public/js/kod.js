@@ -28,10 +28,13 @@ function Commands() {
  *
  * @param {String} canvasId
  */
-function WorldView(canvasId) {
+function WorldView(universe, canvasId) {
+  var self = this;
+
+  this.universe = universe;
   this.world = document.getElementById(canvasId);
-  this.width = Math.floor(window.document.width / 32) - 1;
-  this.height = Math.floor(window.document.height / 32) - 1;
+  this.width = Math.floor(document.body.scrollWidth / 32);
+  this.height = Math.floor(document.body.scrollHeight / 32);
   this.tileWidth = 32;
   this.world.width = this.width * this.tileWidth;
   this.world.height = this.height * this.tileWidth;
@@ -64,7 +67,7 @@ function WorldView(canvasId) {
 
         for(var image in images) {
           var name = images[image];
-          this.drawTile(g.images[name], x, y);
+          this.drawTile(this.universe.images[name], x, y);
         };
       }
     }
@@ -183,7 +186,7 @@ function Game() {
   this.universe = new Universe();
 
   this.client.on("create view", 1, function(pld) {
-    var wv = self.universe.worldView = new WorldView("world");
+    var wv = self.universe.worldView = new WorldView(self.universe, "world");
     self.client.sendCommand("register view", 1, {
       "width": wv.width,
       "height": wv.height

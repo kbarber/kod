@@ -157,23 +157,34 @@ function Universe() {
   this.mongo = new Mongo("mongodb://localhost:27017/kod");
   this.images = [];
 
-  var gk = {images: ['grass']};
-  var gr = {images: ['grass']};
-  var cs = {images: ['cobblestone']};
+  var g = {images: ['grass']};
+  var c = {images: ['cobblestone']};
 
   this.world = [
-    [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
-    [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
-    [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
-    [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
-    [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
-    [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
-    [gr, gr, gr, gr, gr, cs, cs, cs, cs, cs, cs, cs],
-    [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
-    [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
-    [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
-    [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
-    [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr]
+    [g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g],
+    [g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g],
+    [g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g],
+    [g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g],
+    [g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g],
+    [g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g],
+    [g,g,g,g,g,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c],
+    [g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g],
+    [g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g],
+    [g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g],
+    [g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g],
+    [g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g],
+    [c,c,c,c,c,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g],
+    [g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g],
+    [g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g],
+    [g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g],
+    [g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g],
+    [g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g],
+    [g,g,g,g,g,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c,c],
+    [g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g],
+    [g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g],
+    [g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g],
+    [g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g],
+    [g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,c,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g,g]
   ]
 
   /* Grab images */
