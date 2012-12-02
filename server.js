@@ -199,7 +199,7 @@ function Universe() {
   /* Grab images */
   this.mongo.connect(function(db) {
     var collection = db.collection('images');
-    collection.find().toArray(function(err, items) {
+    collection.find({}, {'_id':0}).toArray(function(err, items) {
       self.images = items;
       log('found images', {images: self.images});
     });
