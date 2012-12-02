@@ -236,8 +236,6 @@ function Universe() {
           cView.push(row);
         };
 
-        log('cview', {cview: cView});
-
         func({
           images: self.images,
           view: cView
@@ -288,6 +286,26 @@ function Game() {
 
     universe.clientView(c.view, function(result) {
       c.sendCommand('draw view', 1, result);
+    });
+  });
+
+  server.on("change tile", 1, function(c, pld) {
+    var x = c.view.x;
+    var y = c.view.y;
+    var tile = pld;
+
+    universe.mongo.connect(function(db) {
+      var collection = db.collection('map');
+
+      collection.update({x: x, y: y}, {x: x, y: y, tile: tile}, {upsert: true}, function(err, result) {
+        if(err) { log('unable to change tile', {err: err})};
+
+        log('tile changed', {id: c.id, x: x, y: y, tile: tile});
+
+        universe.clientView(c.view, function(result) {
+          c.sendCommand('draw view', 1, result);
+        });
+      });
     });
   });
 };

@@ -197,6 +197,9 @@ function Game() {
     case 40:
       self.client.sendCommand("move", 1, {dir: "s"});
       break;
+    case 67:
+      self.client.sendCommand("change tile", 1, {floor: 'cobblestone'});
+      break;
     };
   };
 
