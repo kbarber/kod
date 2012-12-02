@@ -28,7 +28,7 @@ function Commands() {
  *
  * @param {String} canvasId
  */
-function WorldView(universe, canvasId) {
+function View(universe, canvasId) {
   var self = this;
 
   this.universe = universe;
@@ -150,7 +150,7 @@ function Universe() {
   var self = this;
 
   this.images = {};
-  this.worldView = null;
+  this.view = null;
 
   this.loadImage = function(name, details, func) {
     log("loading image", {"name": name, "details": details});
@@ -186,10 +186,10 @@ function Game() {
   this.universe = new Universe();
 
   this.client.on("create view", 1, function(pld) {
-    var wv = self.universe.worldView = new WorldView(self.universe, "world");
+    var v = self.universe.view = new View(self.universe, "world");
     self.client.sendCommand("register view", 1, {
-      "width": wv.width,
-      "height": wv.height
+      "width": v.width,
+      "height": v.height
     });
   });
 
@@ -199,7 +199,7 @@ function Game() {
 
     self.universe.loadImages(pld.images, function() {
       log('all images loaded', {"image_count":pld.images.length});
-      self.universe.worldView.drawView(pld.view);
+      self.universe.view.drawView(pld.view);
     });
   });
 };
