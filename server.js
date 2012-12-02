@@ -134,8 +134,6 @@ function Server(port) {
   };
 };
 
-var s = new Server();
-
 /*
 var images = [
   {
@@ -161,55 +159,77 @@ var images = [
 ]
 */
 
-var images = [];
+function Mongo(url) {
+  var self = this;
 
-// Retrieve
-var MongoClient = require('mongodb').MongoClient;
+  this.url = url;
 
-// Connect to the db
-MongoClient.connect("mongodb://localhost:27017/kod", function(err, db) {
-  if(err) { return log('failure to connect', {"err":err}) };
-  log('mongodb connected');
+  var MongoClient = require('mongodb').MongoClient;
 
-  var collection = db.collection('images');
-  //collection.insert(images, {w:1}, function(err, result) {});
-  collection.find().toArray(function(err, items) {
-    images = items;
-    log('found images', {"images": images});
+  this.connect = function(func) {
+    MongoClient.connect(this.url, function(err, db) {
+      if(err) { return log('failure to connect', {"err":err}) };
+      log('mongodb connected');
+
+      func(db);
+    });
+  }; 
+};
+
+function Universe() {
+  var self = this;
+
+  this.mongo = new Mongo("mongodb://localhost:27017/kod");
+  this.images = [];
+
+  /* Grab images */
+  this.mongo.connect(function(db) {
+    var collection = db.collection('images');
+    collection.find().toArray(function(err, items) {
+      self.images = items;
+      log('found images', {"images": self.images});
+    });
   });
-});
+};
 
-s.on("login", 1, function(c, pld) {
-  if(c.login(pld.username, pld.password)) {
-    c.sendCommand('create view', 1, {});
-  } else {
-    c.sendCommand('login again', 1, {});
-  };
-});
+function Game() {
+  var s = new Server();
+  var u = new Universe();
 
-s.on("register view", 1, function(c, pld) {
-  var gk = {images: ['grass', 'knight']};
-  var gr = {images: ['grass']};
-  var cs = {images: ['cobblestone']};
-  var rb = {images: ['grass', 'rabbit']};
-
-  var world = [
-    [gk, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
-    [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
-    [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
-    [gr, gr, gr, gr, gr, cs, gr, gr, gr, rb, gr, gr],
-    [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
-    [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
-    [gr, gr, gr, gr, gr, cs, cs, cs, cs, cs, cs, cs],
-    [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
-    [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
-    [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
-    [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
-    [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr]
-  ]
-
-  c.sendCommand('draw view', 1, {
-    images: images,
-    view: world
+  s.on("login", 1, function(c, pld) {
+    if(c.login(pld.username, pld.password)) {
+      c.sendCommand('create view', 1, {});
+    } else {
+      c.sendCommand('login again', 1, {});
+    };
   });
-});
+
+  s.on("register view", 1, function(c, pld) {
+    var gk = {images: ['grass', 'knight']};
+    var gr = {images: ['grass']};
+    var cs = {images: ['cobblestone']};
+    var rb = {images: ['grass', 'rabbit']};
+
+    var world = [
+      [gk, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
+      [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
+      [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
+      [gr, gr, gr, gr, gr, cs, gr, gr, gr, rb, gr, gr],
+      [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
+      [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
+      [gr, gr, gr, gr, gr, cs, cs, cs, cs, cs, cs, cs],
+      [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
+      [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
+      [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
+      [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr],
+      [gr, gr, gr, gr, gr, cs, gr, gr, gr, gr, gr, gr]
+    ]
+
+    c.sendCommand('draw view', 1, {
+      images: u.images,
+      view: world
+    });
+  });
+};
+
+g = new Game();
