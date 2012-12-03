@@ -52,8 +52,26 @@ function View(universe, canvasId) {
   this.tileCanvas.style.width = this.viewCanvas.style.width;
   this.tileCanvas.style.height = this.viewCanvas.style.height;
 
+  /* Invisible canvas for blitting */
+  this.toolCanvas = document.createElement('canvas');
+  this.toolCanvas.setAttribute('id', 'toolCanvas');
+  this.toolCanvas.style.display = 'none';
+  this.toolCanvas.width = this.viewCanvas.width;
+  this.toolCanvas.height = this.viewCanvas.height;
+  this.toolCanvas.style.width = this.viewCanvas.style.width;
+  this.toolCanvas.style.height = this.viewCanvas.style.height;
+
   this.ctxView = this.viewCanvas.getContext("2d");
   this.ctxTile = this.tileCanvas.getContext("2d");
+  this.ctxTool = this.toolCanvas.getContext("2d");
+
+  this.ctxTool.fillStyle = "white";
+  this.ctxTool.font = "bold 18px century gothic";
+  this.ctxTool.shadowColor = "red";
+  this.ctxTool.shadowOffsetX = 0;
+  this.ctxTool.shadowOffsetY = 0;
+  this.ctxTool.shadowBlur = 10;
+  this.ctxTool.fillText("Knights of Dischord", 10, 20);
 
   /**
    * Draw an image onto the main world area as a tile.
@@ -86,6 +104,7 @@ function View(universe, canvasId) {
 
   this.paint = function() {
     this.ctxView.drawImage(this.tileCanvas, 0, 0);
+    this.ctxView.drawImage(this.toolCanvas, 0, 0);
   };
 };
 
