@@ -181,7 +181,7 @@ function Mongo(url) {
   var MongoClient = require('mongodb').MongoClient;
 
   this.connect = function(func) {
-    MongoClient.connect(this.url, function(err, db) {
+    MongoClient.connect(this.url, {poolSize: 20}, function(err, db) {
       if(err) { return log('failure to connect', {"err":err}) };
       log('mongodb connected', {url: self.url});
 
