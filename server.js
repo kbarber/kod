@@ -173,40 +173,52 @@ function Server(port) {
   };
 };
 
-function Mongo(url) {
+function Mongo(hostname, port, dbName, func) {
   var self = this;
 
-  this.url = url;
+  this.hostname = hostname;
+  this.port = port;
+  this.dbName = dbName;
 
-  var MongoClient = require('mongodb').MongoClient;
+  var Server = require('mongodb').Server,
+      mongoServer = new Server(hostname, port, {native_parser: true, poolSize: 20}),
+      MongoClient = require('mongodb').MongoClient;
+      mongoClient = new MongoClient(mongoServer);
 
   this.connect = function(func) {
-    MongoClient.connect(this.url, {poolSize: 20}, function(err, db) {
+    mongoClient.open(function(err, mongoClient) {
       if(err) { return log('failure to connect', {"err":err}) };
-      log('mongodb connected', {url: self.url});
-
-      func(db);
+      log('mongodb connected', {hostname: self.hostname, port: self.port, dbName: self.dbName});
+      self.db = mongoClient.db(self.dbName);
+      func();
     });
+  };
+  
+  this.work = function(func) {
+    func(this.db);
   }; 
 };
 
 function Universe() {
   var self = this;
 
-  this.mongo = new Mongo("mongodb://localhost:27017/kod");
+  this.mongo = new Mongo("localhost", 27017, "kod");
   this.images = [];
 
-  /* Grab images */
-  this.mongo.connect(function(db) {
-    var collection = db.collection('images');
-    collection.find({}, {'_id':0}).toArray(function(err, items) {
-      self.images = items;
-      log('found images', {images: self.images});
+  /* Connect and grab initial data */
+  this.mongo.connect(function() {
+    /* Grab images */
+    self.mongo.work(function(db) {
+      var collection = db.collection('images');
+      collection.find({}, {'_id':0}).toArray(function(err, items) {
+        self.images = items;
+        log('found images', {images: self.images});
+      });
     });
   });
 
   this.clientView = function(view, func) {
-    this.mongo.connect(function(db) {
+    this.mongo.work(function(db) {
       var collection = db.collection('map');
       collection.find({
         x: {$gte: view.x, $lt: view.x+view.width},
@@ -243,6 +255,7 @@ function Universe() {
       });
     }); 
   };
+
 };
 
 function Game() {
@@ -294,7 +307,7 @@ function Game() {
     var y = c.view.y;
     var tile = pld;
 
-    universe.mongo.connect(function(db) {
+    universe.mongo.work(function(db) {
       var collection = db.collection('map');
 
       collection.update({x: x, y: y}, {x: x, y: y, tile: tile}, {upsert: true}, function(err, result) {
