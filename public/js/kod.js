@@ -32,15 +32,28 @@ function View(universe, canvasId) {
   var self = this;
 
   this.universe = universe;
-  this.world = document.getElementById(canvasId);
+
   this.width = Math.floor(document.body.scrollWidth / 32);
   this.height = Math.floor(document.body.scrollHeight / 32);
   this.tileWidth = 32;
-  this.world.width = this.width * this.tileWidth;
-  this.world.height = this.height * this.tileWidth;
-  this.world.style.width  = this.world.width + 'px';
-  this.world.style.height = this.world.height + 'px';
-  this.ctx = world.getContext("2d");
+
+  this.viewCanvas = document.getElementById(canvasId);
+  this.viewCanvas.width = this.width * this.tileWidth;
+  this.viewCanvas.height = this.height * this.tileWidth;
+  this.viewCanvas.style.width  = this.viewCanvas.width + 'px';
+  this.viewCanvas.style.height = this.viewCanvas.height + 'px';
+
+  /* Invisible canvas for blitting */
+  this.tileCanvas = document.createElement('canvas');
+  this.tileCanvas.setAttribute('id', 'tileCanvas');
+  this.tileCanvas.style.display = 'none';
+  this.tileCanvas.width = this.viewCanvas.width;
+  this.tileCanvas.height = this.viewCanvas.height;
+  this.tileCanvas.style.width = this.viewCanvas.style.width;
+  this.tileCanvas.style.height = this.viewCanvas.style.height;
+
+  this.ctxView = this.viewCanvas.getContext("2d");
+  this.ctxTile = this.tileCanvas.getContext("2d");
 
   /**
    * Draw an image onto the main world area as a tile.
@@ -55,7 +68,7 @@ function View(universe, canvasId) {
    * @param {Number} y Y coordinate
    */
   this.drawTile = function(obj, x, y) {
-    this.ctx.drawImage(obj, x * this.tileWidth, y * this.tileWidth);
+    this.ctxTile.drawImage(obj, x * this.tileWidth, y * this.tileWidth);
   };
 
   this.drawView = function(view) {
@@ -67,7 +80,12 @@ function View(universe, canvasId) {
 
         this.drawTile(this.universe.images[floor], x, y);
       }
-    }
+    };
+    this.paint();
+  };
+
+  this.paint = function() {
+    this.ctxView.drawImage(this.tileCanvas, 0, 0);
   };
 };
 
