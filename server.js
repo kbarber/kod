@@ -239,8 +239,8 @@ function Universe() {
         for(var y = view.y; y < (view.y+view.height); y++) {
           var row = [];
           for(var x = view.x; x < (view.x+view.width); x++) {
-            if(lookupDocs[x] && lookupDocs[x][y]) {
-              row.push(lookupDocs[x][y]);
+            if(lookupDocs[x] && lookupDocs[x][y] && lookupDocs[x][y].tile) {
+              row.push({tile: lookupDocs[x][y].tile});
             } else {
               row.push({tile: {floor: 'blank'}});
             };
@@ -323,4 +323,4 @@ function Game() {
   });
 };
 
-g = new Game();
+game = new Game();
