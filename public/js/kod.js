@@ -28,20 +28,26 @@ function Commands() {
  *
  * @param {String} canvasId
  */
-function View(universe, canvasId) {
+function View(universe, canvasId, toolsId) {
   var self = this;
 
   this.universe = universe;
 
-  this.width = Math.floor(document.body.scrollWidth / 32);
+  this.width = Math.floor((document.body.scrollWidth / 32) * 0.66);
   this.height = Math.floor(document.body.scrollHeight / 32);
-  this.tileWidth = 32;
+  this.tileSize = 32;
 
   this.viewCanvas = document.getElementById(canvasId);
-  this.viewCanvas.width = this.width * this.tileWidth;
-  this.viewCanvas.height = this.height * this.tileWidth;
+  this.viewCanvas.width = this.width * this.tileSize;
+  this.viewCanvas.height = this.height * this.tileSize;
   this.viewCanvas.style.width  = this.viewCanvas.width + 'px';
   this.viewCanvas.style.height = this.viewCanvas.height + 'px';
+
+  this.toolsDiv = document.getElementById(toolsId);
+  this.toolsDiv.width = document.body.scrollWidth - this.viewCanvas.width;
+  this.toolsDiv.height = document.body.scrollHeight;
+  this.toolsDiv.style.width = this.toolsDiv.width + 'px';
+  this.toolsDiv.style.height = this.toolsDiv.height + 'px';
 
   /* Invisible canvas for blitting */
   this.tileCanvas = document.createElement('canvas');
@@ -86,7 +92,7 @@ function View(universe, canvasId) {
    * @param {Number} y Y coordinate
    */
   this.drawTile = function(obj, x, y) {
-    this.ctxTile.drawImage(obj, x * this.tileWidth, y * this.tileWidth);
+    this.ctxTile.drawImage(obj, x * this.tileSize, y * this.tileSize);
   };
 
   this.drawView = function(view) {
@@ -243,7 +249,7 @@ function Game() {
   document.onkeydown = this.checkKey;
 
   this.client.on("create view", 1, function(pld) {
-    var v = self.universe.view = new View(self.universe, "world");
+    var v = self.universe.view = new View(self.universe, "world", "tools");
     self.client.sendCommand("register view", 1, {
       "width": v.width,
       "height": v.height

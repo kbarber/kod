@@ -3,9 +3,15 @@ body {
   background-color: black;
 }
 #world {
+  float: left;
   border: 0px;
-  padding-left: 0;
-  padding-right: 0;
-  margin: 0 auto;
-  display: block;
+  padding: 0px 0px 0px 0px;
+  margin: 0px;
+  position: absolute;
+}
+#tools {
+  float: right;
+  border: 0px;
+  padding: 0px 0px 0px 0px;
+  margin: 0px;
 }
