@@ -1,38 +1,35 @@
-body {
-  background-color: black;
+/* I need to be absolute about this stuff everywhere */
+body,canvas,img,div {
   margin: 0;
   border: 0;
   padding: 0;
 }
-.worldCanvas {
-  float: left;
-  border: 0;
-  padding: 0 0 0 0;
-  margin: 0;
-  position: absolute;
+
+body {
+  background-color: black;
+  overflow: hidden; /* remove scrollbars */
 }
-.toolsCanvas {
-  float: right;
-  border: 0;
-  padding: 0 0 0 0;
-  margin: 0;
+
+.worldCanvas {
+  display: inline-block;
+  height: inherit;
+  width: 66%;
+}
+
+.toolsDiv {
+  display: inline-block;
+  height: inherit;
+  overflow: auto; /* this creates a scroll bar for this div */
+  width: 33%;
 }
 .tileChoiceOption {
-  clear: both;
-  margin: 0;
-  border: 0;
-  padding: 3px;
+  padding: 3px 0 0 0;
 }
 .tileChoiceImg {
   display: inline-block;
-  margin: 0;
-  border: 0;
-  padding: 0;
 }
 .tileChoiceDesc {
-  margin: 0;
   display: inline-block;
-  border: 0;
   padding: 5px;
   color: white;
 }

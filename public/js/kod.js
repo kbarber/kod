@@ -28,49 +28,38 @@ function Commands() {
  *
  * @param {String} canvasId
  */
-function View(universe, canvasId, toolsId) {
+function View(universe) {
   var self = this;
 
   this.universe = universe;
 
-  this.width = Math.floor((document.body.scrollWidth / 32) * 0.66);
-  this.height = Math.floor(document.body.scrollHeight / 32);
+  this.width = 17;
+  this.height = 22;
   this.tileSize = 32;
 
-  this.viewCanvas = document.getElementById(canvasId);
-  this.viewCanvas.width = this.width * this.tileSize;
-  this.viewCanvas.height = this.height * this.tileSize;
-  this.viewCanvas.style.width  = this.viewCanvas.width + 'px';
-  this.viewCanvas.style.height = this.viewCanvas.height + 'px';
+  /* Tool area */
+  this.toolsDiv = $('#tools').get(0);
 
-  this.toolsDiv = document.getElementById(toolsId);
-  this.toolsDiv.width = document.body.scrollWidth - this.viewCanvas.width;
-  this.toolsDiv.height = document.body.scrollHeight;
-  this.toolsDiv.style.width = this.toolsDiv.width + 'px';
-  this.toolsDiv.style.height = this.toolsDiv.height + 'px';
+  /* Main view canvas */
+  this.viewCanvas = $('#world').get(0);
+  this.viewCanvas.width = parseInt(this.viewCanvas.style.width, 10);
+  this.viewCanvas.height = document.innerHeight;
 
   /* Invisible canvas for blitting */
   this.tileCanvas = document.createElement('canvas');
-  this.tileCanvas.setAttribute('id', 'tileCanvas');
-  this.tileCanvas.style.display = 'none';
   this.tileCanvas.width = this.viewCanvas.width;
   this.tileCanvas.height = this.viewCanvas.height;
-  this.tileCanvas.style.width = this.viewCanvas.style.width;
-  this.tileCanvas.style.height = this.viewCanvas.style.height;
 
   /* Invisible canvas for blitting */
   this.toolCanvas = document.createElement('canvas');
-  this.toolCanvas.setAttribute('id', 'toolCanvas');
-  this.toolCanvas.style.display = 'none';
   this.toolCanvas.width = this.viewCanvas.width;
   this.toolCanvas.height = this.viewCanvas.height;
-  this.toolCanvas.style.width = this.viewCanvas.style.width;
-  this.toolCanvas.style.height = this.viewCanvas.style.height;
 
   this.ctxView = this.viewCanvas.getContext("2d");
   this.ctxTile = this.tileCanvas.getContext("2d");
   this.ctxTool = this.toolCanvas.getContext("2d");
 
+  /* Draw title in canvas */
   this.ctxTool.fillStyle = "white";
   this.ctxTool.font = "bold 18px century gothic";
   this.ctxTool.shadowColor = "red";
@@ -191,14 +180,13 @@ function Universe() {
   var self = this;
 
   this.images = {};
-  this.view = null;
-
   this.loadImage = function(name, details, func) {
     log("loading image", {"name": name, "details": details});
     this.images[name] = new Image();
     this.images[name].onload = func;
     this.images[name].src = details.href;
   };
+  this.view = new View(self);
 
   this.loadImages = function(images, func) {
     var icount = images.length;
@@ -226,6 +214,26 @@ function Game() {
   this.client = new Client();
   this.universe = new Universe();
 
+  /* Handle sizing for the div class 'game' 
+   *
+   * The goal is generally to pin the 'game' div to the visible height
+   * and width of the window. This div will contain all viewable widgets so we
+   * end up with a fixed width/height area.
+   */
+  var gameDiv = $('#game').get(0);
+  this.sizeMain = function() {
+    gameDiv.height = window.innerHeight + 'px';
+    gameDiv.width = window.innerWidth + 'px';
+    gameDiv.style.height = gameDiv.height;
+    gameDiv.style.width = gameDiv.width;
+
+    this.universe.view.viewCanvas.height = document.innerHeight;
+    log('window resized', {"height":gameDiv.height, "width":gameDiv.width}); 
+  };
+  window.onresize = this.sizeMain;
+  this.sizeMain();
+
+  /* Setup key handling */
   this.checkKey = function(ev) {
     var e = ev || window.event;
     switch(e.keyCode) {
@@ -246,11 +254,11 @@ function Game() {
       break;
     }
   };
-
   document.onkeydown = this.checkKey;
 
+  /* Configure commands */
   this.client.on("create view", 1, function(pld) {
-    var v = self.universe.view = new View(self.universe, "world", "tools");
+    var v = self.universe.view;
     self.client.sendCommand("register view", 1, {
       "width": v.width,
       "height": v.height
