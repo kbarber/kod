@@ -42,8 +42,11 @@ function View(universe) {
 
   /* Main view canvas */
   this.viewCanvas = $('#world').get(0);
-  this.viewCanvas.width = parseInt(this.viewCanvas.style.width, 10);
-  this.viewCanvas.height = document.innerHeight;
+  var w = parseInt(this.viewCanvas.style.width, 10);
+  var h = document.innerHeight;
+  log('setting size of canvas', {w: w, h: h});
+  this.viewCanvas.width = w;
+  this.viewCanvas.height = h;
 
   /* Invisible canvas for blitting */
   this.tileCanvas = document.createElement('canvas');
@@ -276,4 +279,6 @@ function Game() {
   });
 }
 
-g = new Game();
+$(document).ready(function() {
+  g = new Game();
+});
