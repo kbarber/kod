@@ -1,8 +1,8 @@
 function log(title, data) {
-  if(!data) { data = {} };
+  if(!data) { data = {}; }
   js = JSON.stringify(data);
   console.log("%s\n  [%s]", title, js);
-};
+}
 
 function Commands() {
   var self = this;
@@ -11,7 +11,7 @@ function Commands() {
   this.registerCommand = function(cmd, ver, func) {
     if(!this.commands[cmd]) {
       this.commands[cmd] = {};
-    };
+    }
     this.commands[cmd][ver] = func;
   };
 
@@ -20,7 +20,7 @@ function Commands() {
       this.commands[c][v](client, p);
     } else {
       log('unknown command', {id: client.id, c: c, v: v, p: p});
-    };  
+    }
   };
 }
 
@@ -70,8 +70,9 @@ function Client(cg, id, ws) {
   this.loggedIn = false;
 
   ws.on('message', function(msg) {
+    var json;
     try {
-      var json = JSON.parse(msg);
+      json = JSON.parse(msg);
     } catch(e) {
       log('ws message invalid json', {id: id, data: msg.data});
     }
@@ -81,7 +82,7 @@ function Client(cg, id, ws) {
       self.rcvCommand(json.c, json.v, json.p);
     } else {
       log('not a valid message', {id: id, msg: json});
-    };
+    }
   });
 
   ws.on('close', function() {
@@ -126,11 +127,11 @@ function ClientGroup(server) {
     client = new Client(self, id, ws);
     this.clients[id] = client;
     return client;
-  }
+  };
 
   this.removeClient = function(client) {
     delete this.clients[client];
-  }
+  };
 }
 
 function Server(port) {
@@ -140,10 +141,10 @@ function Server(port) {
   this.clientGroup = new ClientGroup(this);
   this.commands = new Commands();
 
-  var WebSocketServer = require('ws').Server
-    , http = require('http')
-    , express = require('express')
-    , app = express();
+  var WebSocketServer = require('ws').Server,
+      http = require('http'),
+      express = require('express'),
+      app = express();
 
   app.configure(function() {
     app.use(express.static(__dirname + '/public'));
@@ -171,7 +172,7 @@ function Server(port) {
   this.on = function(cmd, ver, func) {
     this.commands.registerCommand(cmd, ver, func);
   };
-};
+}
 
 function Mongo(hostname, port, dbName, func) {
   var self = this;
@@ -187,7 +188,7 @@ function Mongo(hostname, port, dbName, func) {
 
   this.connect = function(func) {
     mongoClient.open(function(err, mongoClient) {
-      if(err) { return log('failure to connect', {"err":err}) };
+      if(err) { return log('failure to connect', {"err":err}); }
       log('mongodb connected', {hostname: self.hostname, port: self.port, dbName: self.dbName});
       self.db = mongoClient.db(self.dbName);
       func();
@@ -197,7 +198,7 @@ function Mongo(hostname, port, dbName, func) {
   this.work = function(func) {
     func(this.db);
   }; 
-};
+}
 
 function Universe() {
   var self = this;
@@ -231,9 +232,9 @@ function Universe() {
           var doc = docs[i];
           if(!lookupDocs[doc.x]) {
             lookupDocs[doc.x] = {};
-          };
+          }
           lookupDocs[doc.x][doc.y] = doc;
-        };
+        }
 
         var cView = [];
         for(var y = view.y; y < (view.y+view.height); y++) {
@@ -243,10 +244,10 @@ function Universe() {
               row.push({tile: lookupDocs[x][y].tile});
             } else {
               row.push({tile: {floor: 'blank'}});
-            };
-          };
+            }
+          }
           cView.push(row);
-        };
+        }
 
         func({
           images: self.images,
@@ -255,8 +256,7 @@ function Universe() {
       });
     }); 
   };
-
-};
+}
 
 function Game() {
   var server = new Server();
@@ -267,7 +267,7 @@ function Game() {
       c.sendCommand('create view', 1, {});
     } else {
       c.sendCommand('login again', 1, {});
-    };
+    }
   });
 
   server.on("register view", 1, function(c, pld) {
@@ -295,7 +295,7 @@ function Game() {
     case "w":
       c.view.x = c.view.x - 1;
       break;
-    };
+    }
 
     universe.clientView(c.view, function(result) {
       c.sendCommand('draw view', 1, result);
@@ -311,7 +311,7 @@ function Game() {
       var collection = db.collection('map');
 
       collection.update({x: x, y: y}, {x: x, y: y, tile: tile}, {upsert: true}, function(err, result) {
-        if(err) { log('unable to change tile', {err: err})};
+        if(err) { log('unable to change tile', {err: err}); }
 
         log('tile changed', {id: c.id, x: x, y: y, tile: tile});
 
@@ -321,6 +321,6 @@ function Game() {
       });
     });
   });
-};
+}
 
 game = new Game();

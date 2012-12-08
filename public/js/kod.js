@@ -1,7 +1,7 @@
 function log(title, data) {
   js = JSON.stringify(data);
   console.log("%s\n  [%s]", title, js);
-};
+}
 
 function Commands() {
   var self = this;
@@ -10,7 +10,7 @@ function Commands() {
   this.registerCommand = function(cmd, ver, func) {
     if(!this.commands[cmd]) {
       this.commands[cmd] = {};
-    };
+    }
     this.commands[cmd][ver] = func;
   };
 
@@ -19,7 +19,7 @@ function Commands() {
       this.commands[c][v](p);
     } else {
       log('unknown command', {"c": c, "v": v, "p": p});
-    };
+    }
   };
 }
 
@@ -104,7 +104,7 @@ function View(universe, canvasId, toolsId) {
 
         this.drawTile(this.universe.images[floor], x, y);
       }
-    };
+    }
     this.paint();
   };
 
@@ -112,7 +112,7 @@ function View(universe, canvasId, toolsId) {
     this.ctxView.drawImage(this.tileCanvas, 0, 0);
     this.ctxView.drawImage(this.toolCanvas, 0, 0);
   };
-};
+}
 
 /**
  * Client connection object.
@@ -125,7 +125,7 @@ function Client(url) {
 
   this.commands = new Commands();
 
-  if(!url) { url = "ws://" + window.document.location.host };
+  if(!url) { url = "ws://" + window.document.location.host; }
   this.url = url;
 
   log('connecting to server', {"url":this.url});
@@ -142,18 +142,19 @@ function Client(url) {
     log('websocket closed', {"url": url});
   };
   this.ws.onmessage = function(msg) {
+    var json;
     try {
-      var json = JSON.parse(msg.data);
+      json = JSON.parse(msg.data);
     } catch(e) {
       log('ws message invalid json', {"data": msg.data});
-    };
+    }
     log('received message', {"url": url, "message": json});
 
     if(json.c && json.v && json.p) {
       self.rcvCommand(json.c, json.v, json.p);
     } else {
       log('not a valid message', {'msg': json});
-    };
+    }
   };
 
   this.login = function(username, password) {
@@ -184,7 +185,7 @@ function Client(url) {
   this.on = function(cmd, ver, func) {
     this.commands.registerCommand(cmd, ver, func);
   };
-};
+}
 
 function Universe() {
   var self = this;
@@ -194,7 +195,7 @@ function Universe() {
 
   this.loadImage = function(name, details, func) {
     log("loading image", {"name": name, "details": details});
-    this.images[name] = new Image;
+    this.images[name] = new Image();
     this.images[name].onload = func;
     this.images[name].src = details.href;
   };
@@ -207,17 +208,17 @@ function Universe() {
      */
     var imageLoaded = function() {
       --icount;
-      if(icount == 0) {
+      if(icount === 0) {
         func();
-      };
+      }
     };
 
     for(var key in images) {
       var image = images[key];
       this.loadImage(image.name, image, imageLoaded);
-    };
+    }
   };
-};
+}
 
 function Game() {
   var self = this;
@@ -225,8 +226,8 @@ function Game() {
   this.client = new Client();
   this.universe = new Universe();
 
-  this.checkKey = function(e) {
-    var e = e || window.event;
+  this.checkKey = function(ev) {
+    var e = ev || window.event;
     switch(e.keyCode) {
     case 37:
       self.client.sendCommand("move", 1, {dir: "w"});
@@ -243,7 +244,7 @@ function Game() {
     case 67:
       self.client.sendCommand("change tile", 1, {floor: 'cobblestone'});
       break;
-    };
+    }
   };
 
   document.onkeydown = this.checkKey;
@@ -265,6 +266,6 @@ function Game() {
       self.universe.view.drawView(pld.view);
     });
   });
-};
+}
 
 g = new Game();

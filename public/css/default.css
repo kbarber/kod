@@ -1,44 +1,41 @@
 body {
   background-color: black;
-  margin: 0px;
-  border: 0px;
-  padding: 0px;
+  margin: 0;
+  border: 0;
+  padding: 0;
 }
-#world {
+.worldCanvas {
   float: left;
-  border: 0px;
-  padding: 0px 0px 0px 0px;
-  margin: 0px;
+  border: 0;
+  padding: 0 0 0 0;
+  margin: 0;
   position: absolute;
 }
-#tools {
+.toolsCanvas {
   float: right;
-  border: 0px;
-  padding: 0px 0px 0px 0px;
-  margin: 0px;
+  border: 0;
+  padding: 0 0 0 0;
+  margin: 0;
 }
-div.tileChoice {
-}
-div.tileChoiceOption {
+.tileChoiceOption {
   clear: both;
-  margin: 0px;
-  border: 0px;
+  margin: 0;
+  border: 0;
   padding: 3px;
 }
-img.tileChoiceImg {
-  float: left;
+.tileChoiceImg {
   display: inline-block;
-  margin: 0px;
-  border: 0px;
-  padding: 0px;
+  margin: 0;
+  border: 0;
+  padding: 0;
 }
-div.tileChoiceDesc {
-  margin: 0px;
+.tileChoiceDesc {
+  margin: 0;
   display: inline-block;
-  border: 0px;
+  border: 0;
   padding: 5px;
   color: white;
 }
-div.tileChoiceDesc p {
-  margin: 0px;
+.tileChoiceDesc p {
+  margin: 0;
 }

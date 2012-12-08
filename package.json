@@ -6,5 +6,10 @@
     "ws": "~0.4.0",
     "ejs": "~0.8.0",
     "mongodb": "~1.2.0"
+  },
+  "devDependencies": {
+    "grunt": "~0.3.0",
+    "grunt-html": "~0.2.0",
+    "grunt-css": "~0.3.0"
   }
 }
