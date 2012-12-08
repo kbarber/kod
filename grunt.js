@@ -1,5 +1,16 @@
 module.exports = function(grunt) {
   grunt.initConfig({
+    pkg: '<json:package.json>',
+    meta: {
+      banner: '/*! <%= pkg.name %> - v<%= pkg.version %> - ' +
+        '<%= grunt.template.today("yyyy-mm-dd") %> */'
+    },
+    concat: {
+      ui: {
+        src: ['ui/*.js'],
+        dest: 'public/js/kod.js'
+      }
+    },
     lint: {
       all: ['grunt.js', 'public/js/*.js', 'server.js', 'lib/**/*.js']
     },
