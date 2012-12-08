@@ -2,7 +2,7 @@
   "name": "kod",
   "version": "0.0.1",
   "scripts": {
-    "start": "grunt concat:ui; node server"
+    "start": "grunt concat; node server"
   },
   "dependencies": {
     "express": "~3.0.0",

@@ -3,3 +3,4 @@ node_modules
 out
 npm-debug.log
 public/js/kod.js
+public/css/kod.css

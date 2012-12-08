@@ -7,12 +7,18 @@ module.exports = function(grunt) {
     },
     concat: {
       ui: {
-        src: ['ui/*.js'],
+        src: ['ui/js/**.js'],
         dest: 'public/js/kod.js'
+      },
+      css: {
+        src: ['ui/css/**.css'],
+        dest: 'public/css/kod.css'
       }
     },
     lint: {
-      all: ['grunt.js', 'public/js/*.js', 'server.js', 'lib/**/*.js']
+      core: ['grunt.js'],
+      ui: ['ui/js/**.js'],
+      server: ['server.js']
     },
     jshint: {
       options: {
@@ -21,11 +27,11 @@ module.exports = function(grunt) {
       }
     },
     htmllint: {
-      all: ["public/*.html"]
+      all: ["public/**.html"]
     },
     csslint: {
-      base_theme: {
-        src: "public/css/**.css"
+      ui: {
+        src: "ui/css/**.css"
       }
     }
   });

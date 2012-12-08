@@ -2,89 +2,89 @@
 <meta charset="UTF-8">
 <title>Knights of Dischord</title>
 <link rel="stylesheet" href="ext/jquery-ui-1.9.2/css/smoothness/jquery-ui-1.9.2.custom.css">
-<link rel="stylesheet" href="css/default.css">
-<div id="game" class="gameDiv">
-  <canvas id="world" class="worldCanvas"></canvas>
-  <div id="tools" class="toolsDiv">
-    <div class="tileChoice">
-      <div class="tileChoiceOption">
-        <img class="tileChoiceImg" src="img/grass.png" alt="grass">
-        <div class="tileChoiceDesc">
+<link rel="stylesheet" href="css/kod.css">
+<div id="game">
+  <canvas id="world" class="kod-view"></canvas>
+  <div id="tools" class="kod-tools">
+    <div class="kod-tools-tile-choice">
+      <div class="kod-tools-tile-choice-opt">
+        <img class="kod-tools-tile-choice-img" src="img/grass.png" alt="grass">
+        <div class="kod-tools-tile-choice-desc">
           <p>Grass</p>
           <p>Foo</p>
         </div>
       </div>
-      <div class="tileChoiceOption">
-        <img class="tileChoiceImg" src="img/grass.png" alt="grass">
-        <div class="tileChoiceDesc">
+      <div class="kod-tools-tile-choice-opt">
+        <img class="kod-tools-tile-choice-img" src="img/grass.png" alt="grass">
+        <div class="kod-tools-tile-choice-desc">
           <p>Grass</p>
           <p>Foo</p>
         </div>
       </div>
-      <div class="tileChoiceOption">
-        <img class="tileChoiceImg" src="img/grass.png" alt="grass">
-        <div class="tileChoiceDesc">
+      <div class="kod-tools-tile-choice-opt">
+        <img class="kod-tools-tile-choice-img" src="img/grass.png" alt="grass">
+        <div class="kod-tools-tile-choice-desc">
           <p>Grass</p>
           <p>Foo</p>
         </div>
       </div>
-      <div class="tileChoiceOption">
-        <img class="tileChoiceImg" src="img/grass.png" alt="grass">
-        <div class="tileChoiceDesc">
+      <div class="kod-tools-tile-choice-opt">
+        <img class="kod-tools-tile-choice-img" src="img/grass.png" alt="grass">
+        <div class="kod-tools-tile-choice-desc">
           <p>Grass</p>
           <p>Foo</p>
         </div>
       </div>
-      <div class="tileChoiceOption">
-        <img class="tileChoiceImg" src="img/grass.png" alt="grass">
-        <div class="tileChoiceDesc">
+      <div class="kod-tools-tile-choice-opt">
+        <img class="kod-tools-tile-choice-img" src="img/grass.png" alt="grass">
+        <div class="kod-tools-tile-choice-desc">
           <p>Grass</p>
           <p>Foo</p>
         </div>
       </div>
-      <div class="tileChoiceOption">
-        <img class="tileChoiceImg" src="img/grass.png" alt="grass">
-        <div class="tileChoiceDesc">
+      <div class="kod-tools-tile-choice-opt">
+        <img class="kod-tools-tile-choice-img" src="img/grass.png" alt="grass">
+        <div class="kod-tools-tile-choice-desc">
           <p>Grass</p>
           <p>Foo</p>
         </div>
       </div>
-      <div class="tileChoiceOption">
-        <img class="tileChoiceImg" src="img/grass.png" alt="grass">
-        <div class="tileChoiceDesc">
+      <div class="kod-tools-tile-choice-opt">
+        <img class="kod-tools-tile-choice-img" src="img/grass.png" alt="grass">
+        <div class="kod-tools-tile-choice-desc">
           <p>Grass</p>
           <p>Foo</p>
         </div>
       </div>
-      <div class="tileChoiceOption">
-        <img class="tileChoiceImg" src="img/grass.png" alt="grass">
-        <div class="tileChoiceDesc">
+      <div class="kod-tools-tile-choice-opt">
+        <img class="kod-tools-tile-choice-img" src="img/grass.png" alt="grass">
+        <div class="kod-tools-tile-choice-desc">
           <p>Grass</p>
           <p>Foo</p>
         </div>
       </div>
-      <div class="tileChoiceOption">
-        <img class="tileChoiceImg" src="img/grass.png" alt="grass">
-        <div class="tileChoiceDesc">
+      <div class="kod-tools-tile-choice-opt">
+        <img class="kod-tools-tile-choice-img" src="img/grass.png" alt="grass">
+        <div class="kod-tools-tile-choice-desc">
           <p>Grass</p>
           <p>Foo</p>
         </div>
       </div>
-      <div class="tileChoiceOption">
-        <img class="tileChoiceImg" src="img/cobblestone.png" alt="cobblestone">
-        <div class="tileChoiceDesc">
+      <div class="kod-tools-tile-choice-opt">
+        <img class="kod-tools-tile-choice-img" src="img/cobblestone.png" alt="cobblestone">
+        <div class="kod-tools-tile-choice-desc">
           Cobblestone
         </div>
       </div>
-      <div class="tileChoiceOption">
-        <img class="tileChoiceImg" src="img/cobblestone.png" alt="cobblestone">
-        <div class="tileChoiceDesc">
+      <div class="kod-tools-tile-choice-opt">
+        <img class="kod-tools-tile-choice-img" src="img/cobblestone.png" alt="cobblestone">
+        <div class="kod-tools-tile-choice-desc">
           Cobblestone
         </div>
       </div>
-      <div class="tileChoiceOption">
-        <img class="tileChoiceImg" src="img/cobblestone.png" alt="cobblestone">
-        <div class="tileChoiceDesc">
+      <div class="kod-tools-tile-choice-opt">
+        <img class="kod-tools-tile-choice-img" src="img/cobblestone.png" alt="cobblestone">
+        <div class="kod-tools-tile-choice-desc">
           Cobblestone
         </div>
       </div>
@@ -94,3 +94,9 @@
 <script src="ext/jquery-1.8.3.js"></script>
 <script src="ext/jquery-ui-1.9.2/js/jquery-ui-1.9.2.custom.js"></script>
 <script src="js/kod.js"></script>
+<script>
+/* Start by initializing the game jquery-ui widget */
+$(document).ready(function() {
+  g = $('#game').game();
+});
+</script>

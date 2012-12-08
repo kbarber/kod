@@ -1,0 +1,20 @@
+.kod-tools {
+  display: inline-block;
+  height: inherit;
+  overflow: auto; /* this creates a scroll bar for this div */
+  width: 33%;
+}
+.kod-tools-tile-choice-opt {
+  padding: 3px 0 0 0;
+}
+.kod-tools-tile-choice-img {
+  display: inline-block;
+}
+.kod-tools-tile-choice-desc {
+  display: inline-block;
+  padding: 3px;
+  color: white;
+}
+.kod-tools-tile-choice-desc p {
+  margin: 0;
+}
