@@ -10,24 +10,88 @@
     },
 
     _create: function() {
-      var opts = this.options
+      var opts = this.options,
           self = this;
 
-      this.div = this.element.get(0);
       this.element.addClass(opts.cssClasses);
+
+      this.div = this.element.get(0);
+      this.mapView = this._createMapView();
       this.client = new Client();
-      this.universe = new Universe();
+      this.images = {};
 
       $(window).resize(function() {
         self._resize();
-      });
+      }); // Wrapped to preserve scope
       this._resize();
 
-      document.onkeydown = this._handleKeys;
+      document.onkeydown = function(ev) {
+        self._handleKeys(ev);
+      };
 
       this._registerCommands();
     },
 
+    /**
+     * Retrieve images
+     */
+    getImages: function() {
+      return this.images;
+    },
+
+    /**
+     * Load an image, call 'func()' when done.
+     * TODO: look into jquery event handling here 
+     */
+    _loadImage: function(name, details, func) {
+      log("loading image", {"name": name, "details": details});
+      this.images[name] = new Image();
+      this.images[name].onload = func;
+      this.images[name].src = details.href;
+    },
+
+    /**
+     * Load a set of images. Calls func() when they are all done.
+     */
+    _loadImages: function(images, func) {
+      var icount = images.length;
+
+      /** 
+       * A function for counting down image loads and executing a callback when
+       * they are all complete.
+       */
+      var imageLoaded = function() {
+        --icount;
+        if(icount === 0) {
+          func();
+        }   
+      };  
+
+      for(var key in images) {
+        var image = images[key];
+        this._loadImage(image.name, image, imageLoaded);
+      }   
+    },
+
+    /**
+     * Create a descendant map from the game div.
+     */
+    _createMapView: function() {
+      var vc = $('<canvas id="mapview"/>');
+      vc.prependTo(this.div);
+      var mv = vc.mapview();
+      var h = parseInt(mv.css("height"), 10);
+      var w = parseInt(mv.css("width"), 10);
+      log('create map view', {h: h, w: w});
+      mv.get(0).height = h;
+      mv.get(0).width = w;
+      return mv;
+    },
+
+    /**
+     * Called during window resizing this will change the height and width
+     * of the game div to ensure we keep fixed width and height.
+     */
     _resize: function() {
       var h = window.innerHeight + 'px';
       var w = window.innerWidth + 'px';
@@ -35,11 +99,14 @@
       this.div.style.height = h;
       this.div.style.width = w;
 
-      this.universe.view.viewCanvas.height = h;
       log('window resized', {"h": h, "w": w}); 
     },
 
+    /**
+     * Deals with key presses.
+     */
     _handleKeys: function(ev) {
+      var self = this;
       var e = ev || window.event;
       switch(e.keyCode) {
       case 37:
@@ -60,14 +127,17 @@
       }
     },
 
+    /**
+     * Register the protocol commands for receiving messages from the server.
+     */
     _registerCommands: function() {
       var self = this;
 
       this.client.on("create view", 1, function(pld) {
-        var v = self.universe.view;
+        var v = self.mapView;
         self.client.sendCommand("register view", 1, {
-          "width": v.width,
-          "height": v.height
+          "width": self.mapView.mapview('option', 'tilesWidth'),
+          "height": self.mapView.mapview('option', 'tilesHeight')
         });
       });
 
@@ -75,20 +145,28 @@
         var images = pld.images;
         var view = pld.view;
 
-        self.universe.loadImages(pld.images, function() {
+        self._loadImages(pld.images, function() {
           log('all images loaded', {"image_count":pld.images.length});
-          self.universe.view.drawView(pld.view);
+          self.mapView.mapview('drawView', pld.view);
         });
       });
     },
 
+    /**
+     * This gets called when someone modifies the widget options.
+     */
     _setOption: function(name, value) {
       $.Widget.prototype._setOption.apply(this, arguments);
     },
 
+    /**
+     * Removes any elements created during the widget init and then self-
+     * destructs.
+     *
+     * "When the button is pushed theres no runnin' away"
+     */
     _destroy: function() {
       this.element.removeClass(this.options.cssClasses);
-      this._destroy();
     }
   });
 }(jQuery));

@@ -225,7 +225,7 @@ function Universe() {
         x: {$gte: view.x, $lt: view.x+view.width},
         y: {$gte: view.y, $lt: view.y+view.height}
       },{"_id":0}).toArray(function(err, docs) {
-        log('got map from mongodb', {map: docs});
+        //log('got map from mongodb', {map: docs});
 
         var lookupDocs = {};
         for(var i in docs) {

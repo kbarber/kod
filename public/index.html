@@ -4,7 +4,6 @@
 <link rel="stylesheet" href="ext/jquery-ui-1.9.2/css/smoothness/jquery-ui-1.9.2.custom.css">
 <link rel="stylesheet" href="css/kod.css">
 <div id="game">
-  <canvas id="world" class="kod-view"></canvas>
   <div id="tools" class="kod-tools">
     <div class="kod-tools-tile-choice">
       <div class="kod-tools-tile-choice-opt">
@@ -96,7 +95,8 @@
 <script src="js/kod.js"></script>
 <script>
 /* Start by initializing the game jquery-ui widget */
+var game;
 $(document).ready(function() {
-  g = $('#game').game();
+  game = $('#game').game();
 });
 </script>
