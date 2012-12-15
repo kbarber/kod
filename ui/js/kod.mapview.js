@@ -23,8 +23,8 @@
       /* tile size in pixels */
       tileSize: 32,
       /* Number of tiles in width and height */
-      tilesWidth: 18,
-      tilesHeight: 22
+      tilesWidth: 64,
+      tilesHeight: 64 
     },
 
     _create: function() {
@@ -54,7 +54,7 @@
 
       /* Start watching resize events */
       this._resize();
-      //this._watchForResize();
+      this._watchForResize();
     },
 
     _drawTile: function(obj, x, y) {
@@ -63,6 +63,7 @@
     },
 
     drawView: function(view) {
+      this.lastView = view;
       var images = this.game.game('getImages');
       for(var y = 0; y < view.length; y++) {
         var row = view[y];
@@ -92,16 +93,12 @@
     _watchForResize: function() {
       var self = this;
 
-      function resizeTimer() {
-        setInterval(function(){
-          self._resize();
-          resizeTimer();
-        }, 300);
-      }
-      resizeTimer();
+      setInterval(function(){
+        self._resize();
+      }, 100);
     },
 
-    _resize: function(onresize) {
+    _resize: function() {
       var h = parseInt(this.element.css("height"), 10);
       var w = parseInt(this.element.css("width"), 10);
 
@@ -126,7 +123,11 @@
           this.watermarkCanvas.width = w;
         }
 
-        this._paint();
+        if(this.lastView) {
+          log('redrawing mapview');
+          this.drawView(this.lastView);
+        }
+//        this._paint();
       }
     },
 
