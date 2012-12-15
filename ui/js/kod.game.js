@@ -16,7 +16,11 @@
       this.element.addClass(opts.cssClasses);
 
       this.div = this.element.get(0);
+
+      /* Create mapview and tools area on screen */
+      this.tools = this._createTools();
       this.mapView = this._createMapView();
+
       this.client = new Client();
       this.images = {};
 
@@ -86,6 +90,16 @@
       mv.get(0).height = h;
       mv.get(0).width = w;
       return mv;
+    },
+
+    /**
+     * Create the tools area
+     */
+    _createTools: function() {
+      var tdiv = $('<div id="tools"/>');
+      tdiv.prependTo(this.div);
+      var tools = tdiv.tools();
+      return tools;
     },
 
     /**

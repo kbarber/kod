@@ -53,10 +53,10 @@
       this.ctxWatermark.fillText("Knights of Dischord", 10, 20);
 
       /* Start watching resize events */
-      this._resize();
       $(window).resize(function() {
-        this._resize();
+        self._resize();
       });
+      this._resize();
     },
 
     _drawTile: function(obj, x, y) {

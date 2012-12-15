@@ -2,4 +2,5 @@
   display: inline-block;
   height: inherit;
   width: 66%;
+  vertical-align: top;
 }
