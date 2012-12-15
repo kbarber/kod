@@ -54,7 +54,9 @@
 
       /* Start watching resize events */
       this._resize();
-      this._watchForResize();
+      $(window).resize(function() {
+        this._resize();
+      });
     },
 
     _drawTile: function(obj, x, y) {
@@ -90,14 +92,6 @@
       $.Widget.prototype._setOption.apply(this, arguments);
     },
 
-    _watchForResize: function() {
-      var self = this;
-
-      setInterval(function(){
-        self._resize();
-      }, 100);
-    },
-
     _resize: function() {
       var h = parseInt(this.element.css("height"), 10);
       var w = parseInt(this.element.css("width"), 10);
@@ -127,7 +121,6 @@
           log('redrawing mapview');
           this.drawView(this.lastView);
         }
-//        this._paint();
       }
     },
 
