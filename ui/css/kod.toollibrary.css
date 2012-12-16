@@ -1,0 +1,6 @@
+#selectable .ui-selecting {
+  background: #ccc;
+}
+#selectable .ui-selected {
+  background: #999;
+}

@@ -16,6 +16,25 @@
       this.div = this.element.get(0);
       this.element.addClass(opts.cssClasses);
 
+      /* Create necessary DOM elements for jquery ui tab widget */
+      var tabdiv = $('<div id="toolTabs">');
+      tabdiv.css('height', 'inherit')
+            .append($('<div id="toolTabsProperties"></div>'))
+            .append($('<div id="toolTabsLibrary"></div>'))
+            .appendTo(this.div);
+      var ul = $('<ul>');
+      ul.prependTo(tabdiv),
+        .append($('<li><a href="#toolTabsProperties">Properties</a></li>')),
+        .append($('<li><a href="#toolTabsLibrary">Library</a></li>'));
+
+      /* Make it a widget */
+      $('#toolTabs').tabs({
+        heightStyle: "fill"
+      });
+
+      /* Prep the tool library widget */
+      $('#toolTabsLibrary').toollibrary();
+
       /* Start watching resize events */
       $(window).resize(function() {
         self._resize();

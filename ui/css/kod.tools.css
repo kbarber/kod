@@ -1,7 +1,6 @@
 .kod-tools {
   display: inline-block;
   height: inherit;
-  overflow: auto; /* this creates a scroll bar for this div */
-  width: 33%;
+  width: 34%;
   vertical-align: top;
 }
