@@ -18,8 +18,23 @@
       this.div = this.element.get(0);
 
       /* Create mapview and tools area on screen */
-      this.tools = this._createTools();
-      this.mapView = this._createMapView();
+      var left = $('<div>');
+      left.addClass('kod-left kod-noboxmodel')
+          .appendTo(this.div);
+
+      this.mapView = $('<canvas id="mapview"/>');
+      this.mapView.appendTo(left)
+        .mapview()
+        .height = parseInt(this.mapView.css("height"), 10)
+        .width = parseInt(this.mapView.css("width"), 10);
+
+      var sdiv = $('<div id="statusbar"/>');
+      sdiv.appendTo(left)
+          .statusbar();
+
+      var tdiv = $('<div id="tools"/>');
+      tdiv.appendTo(this.div)
+          .tools();
 
       this.client = new Client();
       this.images = {};
@@ -75,31 +90,6 @@
         var image = images[key];
         this._loadImage(image.name, image, imageLoaded);
       }   
-    },
-
-    /**
-     * Create a descendant map from the game div.
-     */
-    _createMapView: function() {
-      var vc = $('<canvas id="mapview"/>');
-      vc.prependTo(this.div);
-      var mv = vc.mapview();
-      var h = parseInt(mv.css("height"), 10);
-      var w = parseInt(mv.css("width"), 10);
-      log('create map view', {h: h, w: w});
-      mv.get(0).height = h;
-      mv.get(0).width = w;
-      return mv;
-    },
-
-    /**
-     * Create the tools area
-     */
-    _createTools: function() {
-      var tdiv = $('<div id="tools"/>');
-      tdiv.prependTo(this.div);
-      var tools = tdiv.tools();
-      return tools;
     },
 
     /**

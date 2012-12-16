@@ -1,6 +1,5 @@
 .kod-mapview {
-  display: inline-block;
-  height: inherit;
-  width: 66%;
+  height: 95%;
+  width: 100%;
   vertical-align: top;
 }

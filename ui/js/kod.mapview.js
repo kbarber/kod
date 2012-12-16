@@ -52,6 +52,11 @@
       this.ctxWatermark.shadowBlur = 10;
       this.ctxWatermark.fillText("Knights of Dischord", 10, 20);
 
+      /* Report mouse status */
+      $(document).mousemove(function(evt) {
+        $('#statusbar').statusbar('setMouseXY', evt.pageX, evt.pageY);
+      });
+
       /* Start watching resize events */
       $(window).resize(function() {
         self._resize();

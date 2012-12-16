@@ -23,8 +23,8 @@
             .append($('<div id="toolTabsLibrary"></div>'))
             .appendTo(this.div);
       var ul = $('<ul>');
-      ul.prependTo(tabdiv),
-        .append($('<li><a href="#toolTabsProperties">Properties</a></li>')),
+      ul.prependTo(tabdiv)
+        .append($('<li><a href="#toolTabsProperties">Properties</a></li>'))
         .append($('<li><a href="#toolTabsLibrary">Library</a></li>'));
 
       /* Make it a widget */

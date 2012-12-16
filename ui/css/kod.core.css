@@ -7,6 +7,7 @@ body,canvas,img,div {
 
 body {
   background-color: black;
+  color: white;
   overflow: hidden; /* remove scrollbars */
 }
 
