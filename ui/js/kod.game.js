@@ -18,18 +18,18 @@
       this.div = this.element.get(0);
 
       /* Create mapview and tools area on screen */
-      var left = $('<div>');
-      left.addClass('kod-left kod-noboxmodel')
-          .appendTo(this.div);
+      var mapViewDiv = $('<div>');
+      mapViewDiv.addClass('kod-mapviewdiv kod-noboxmodel')
+                .appendTo(this.div);
 
       this.mapView = $('<canvas id="mapview"/>');
-      this.mapView.appendTo(left)
+      this.mapView.appendTo(mapViewDiv)
         .mapview()
         .height = parseInt(this.mapView.css("height"), 10)
         .width = parseInt(this.mapView.css("width"), 10);
 
       var sdiv = $('<div id="statusbar"/>');
-      sdiv.appendTo(left)
+      sdiv.appendTo(this.div)
           .statusbar();
 
       var tdiv = $('<div id="tools"/>');

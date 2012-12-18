@@ -23,8 +23,8 @@
       /* tile size in pixels */
       tileSize: 32,
       /* Number of tiles in width and height */
-      tilesWidth: 64,
-      tilesHeight: 64 
+      tilesWidth: 80,
+      tilesHeight: 80 
     },
 
     _create: function() {

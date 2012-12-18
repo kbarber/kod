@@ -15,11 +15,11 @@
 
       this.div = this.element.get(0);
       this.element.addClass(opts.cssClasses);
-      this.element.css('height', 'inherit');
+      this.element.css('height', '100%');
 
       /* Prepare content for accordion view */
       var accdiv = $('<div id="toolLibraryAccordion">');
-      accdiv.css('height', 'inherit')
+      accdiv.css('height', '100%')
             .append($('<h3>Objects</h3>'))
             .append($('<div id="toolLibraryObjects">'))
             .append($('<h3>Floors</h3>'))
@@ -27,9 +27,7 @@
             .appendTo(this.div);
 
       /* Now make it an accordian */
-      $('#toolLibraryAccordion').accordion({
-        heightStyle: "fill"
-      });
+      $('#toolLibraryAccordion').accordion();
 
       /* Draw some sample selectables */
       var sol = $('<ol id="selectable">');

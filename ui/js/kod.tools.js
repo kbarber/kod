@@ -18,7 +18,7 @@
 
       /* Create necessary DOM elements for jquery ui tab widget */
       var tabdiv = $('<div id="toolTabs">');
-      tabdiv.css('height', 'inherit')
+      tabdiv.css('height', '100%')
             .append($('<div id="toolTabsProperties"></div>'))
             .append($('<div id="toolTabsLibrary"></div>'))
             .appendTo(this.div);
@@ -28,9 +28,7 @@
         .append($('<li><a href="#toolTabsLibrary">Library</a></li>'));
 
       /* Make it a widget */
-      $('#toolTabs').tabs({
-        heightStyle: "fill"
-      });
+      $('#toolTabs').tabs();
 
       /* Prep the tool library widget */
       $('#toolTabsLibrary').toollibrary();
