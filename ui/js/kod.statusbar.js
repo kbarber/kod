@@ -16,8 +16,8 @@
       this.div = this.element.get(0);
       this.element.addClass(opts.cssClasses);
 
-      this.element.append($('<span id="statusBarMouseX">X:</span>'))
-                  .append($('<span id="statusBarMouseY">Y:</span>'));
+      this.element.append($('<span id="statusBarMouseX">X: </span>'))
+                  .append($('<span id="statusBarMouseY">Y: </span>'));
 
       /* Start watching resize events */
       $(window).resize(function() {
