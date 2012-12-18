@@ -49,6 +49,7 @@
 
       /* Report mouse status */
       $(document).mousemove(function(evt) {
+        self._pointer(evt.pageX, evt.pageY);
         $('#statusbar').statusbar('setMouseXY', evt.pageX, evt.pageY);
       });
 
@@ -102,6 +103,20 @@
 
     _setOption: function(name, value) {
       $.Widget.prototype._setOption.apply(this, arguments);
+    },
+
+    _pointer: function(x, y) {
+      var ctx = this.ctxPointer;
+      //ctx.fillStyle="#FF0000";
+      ctx.strokeStyle = '#FF0000';
+      ctx.lineWidth = 4;
+
+      var ts = this.options.tileSize;
+      var newx = Math.floor(x / ts) * ts;
+      var newy = Math.floor(y / ts) * ts;
+      ctx.clearRect(0, 0, this.pointerCanvas.width, this.pointerCanvas.height);
+      ctx.strokeRect(newx, newy, ts, ts);
+      this._paint();
     },
 
     _resize: function() {
