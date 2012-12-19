@@ -55,6 +55,11 @@
         $('#statusbar').statusbar('setMouseXY', evt.pageX, evt.pageY);
       });
 
+      this.element.mouseleave(function(evt) {
+        self._pointerClear();
+        $('#statusbar').statusbar('setMouseXY', '?', '?');
+      });
+
       this.element.mousedown(function(evt) {
         if(evt.button == 0) {
           self._selected(evt.pageX, evt.pageY);
@@ -124,6 +129,12 @@
       var newy = Math.floor(y / ts) * ts;
       ctx.clearRect(0, 0, this.pointerCanvas.width, this.pointerCanvas.height);
       ctx.strokeRect(newx, newy, ts, ts);
+      this._paint();
+    },
+
+    _pointerClear: function() {
+      var ctx = this.ctxPointer;
+      ctx.clearRect(0, 0, this.pointerCanvas.width, this.pointerCanvas.height);
       this._paint();
     },
 
