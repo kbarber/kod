@@ -38,19 +38,27 @@
       /* Create some hidden canvas for blitting */
       this.tileCanvas = createBlitCanvas(this.element);
       this.pointerCanvas = createBlitCanvas(this.element);
+      this.selectedCanvas = createBlitCanvas(this.element);
       this.watermarkCanvas = createBlitCanvas(this.element);
 
       this.ctxView = this.canvas.getContext("2d");
       this.ctxTile = this.tileCanvas.getContext("2d");
       this.ctxPointer = this.pointerCanvas.getContext("2d");
+      this.ctxSelected = this.selectedCanvas.getContext("2d");
       this.ctxWatermark = this.watermarkCanvas.getContext("2d");
 
       this._drawWatermark();
 
       /* Report mouse status */
-      $(document).mousemove(function(evt) {
+      this.element.mousemove(function(evt) {
         self._pointer(evt.pageX, evt.pageY);
         $('#statusbar').statusbar('setMouseXY', evt.pageX, evt.pageY);
+      });
+
+      this.element.mousedown(function(evt) {
+        if(evt.button == 0) {
+          self._selected(evt.pageX, evt.pageY);
+        }
       });
 
       /* Start watching resize events */
@@ -97,6 +105,7 @@
 
     _paint: function() {
       this.ctxView.drawImage(this.tileCanvas, 0, 0);
+      this.ctxView.drawImage(this.selectedCanvas, 0, 0);
       this.ctxView.drawImage(this.pointerCanvas, 0, 0);
       this.ctxView.drawImage(this.watermarkCanvas, 0, 0);
     },
@@ -107,7 +116,6 @@
 
     _pointer: function(x, y) {
       var ctx = this.ctxPointer;
-      //ctx.fillStyle="#FF0000";
       ctx.strokeStyle = '#FF0000';
       ctx.lineWidth = 4;
 
@@ -115,6 +123,19 @@
       var newx = Math.floor(x / ts) * ts;
       var newy = Math.floor(y / ts) * ts;
       ctx.clearRect(0, 0, this.pointerCanvas.width, this.pointerCanvas.height);
+      ctx.strokeRect(newx, newy, ts, ts);
+      this._paint();
+    },
+
+    _selected: function(x, y) {
+      var ctx = this.ctxSelected;
+      ctx.strokeStyle = '#FFFFFF';
+      ctx.lineWidth = 2;
+
+      var ts = this.options.tileSize;
+      var newx = Math.floor(x / ts) * ts;
+      var newy = Math.floor(y / ts) * ts;
+      ctx.clearRect(0, 0, this.selectedCanvas.width, this.selectedCanvas.height);
       ctx.strokeRect(newx, newy, ts, ts);
       this._paint();
     },
@@ -144,6 +165,10 @@
         if(this.pointerCanvas) {
           this.pointerCanvas.height = h;
           this.pointerCanvas.width = w;
+        }
+        if(this.selectedCanvas) {
+          this.selectedCanvas.height = h;
+          this.selectedCanvas.width = w;
         }
 
         this._drawWatermark();
