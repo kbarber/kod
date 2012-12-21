@@ -1,20 +1,20 @@
 (function($, undefined) {
-  $.widget('kod.statusbar', {
+  $.widget('kod.toolproperties', {
     version: "@VERSION",
 
     defaultElement: "<div>",
 
     options: {
       /* css classes that get applied to our element */
-      cssClasses: 'kod-statusbar kod-noboxmodel',
+      cssClasses: 'kod-toolproperties kod-noboxmodel',
     },
 
     _create: function() {
       var self = this;
 
-      this.element.addClass(this.options.cssClasses);
-                  .append($('<span id="statusBarMouseX">X: </span>'))
-                  .append($('<span id="statusBarMouseY">Y: </span>'));
+      this.element.addClass(this.options.cssClasses)
+                  .css('height', '100%')
+                  .html('<p><span>Floor:</span> <span id="propertyFloor"></span></p>');
 
       /* Start watching resize events */
       $(window).resize(function() {
@@ -23,9 +23,8 @@
       this._resize();
     },
 
-    setMouseXY: function(x, y) {
-      $('#statusBarMouseX').text('X: ' + x + ' ');
-      $('#statusBarMouseY').text('Y: ' + y + ' ');
+    showTile: function(tile) {
+      $('#propertyFloor').text(tile.tile.floor);
     },
 
     _setOption: function(name, value) {

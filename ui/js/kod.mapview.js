@@ -144,10 +144,12 @@
       ctx.lineWidth = 2;
 
       var ts = this.options.tileSize;
-      var newx = Math.floor(x / ts) * ts;
-      var newy = Math.floor(y / ts) * ts;
+      var tilex = Math.floor(x / ts);
+      var tiley = Math.floor(y / ts);
       ctx.clearRect(0, 0, this.selectedCanvas.width, this.selectedCanvas.height);
-      ctx.strokeRect(newx, newy, ts, ts);
+      ctx.strokeRect(tilex * ts, tiley * ts, ts, ts);
+
+      $(':kod-toolproperties').toolproperties('showTile', this.lastView[tiley][tilex]);
       this._paint();
     },
 

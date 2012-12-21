@@ -10,28 +10,26 @@
     },
 
     _create: function() {
-      var opts = this.options,
-          self = this;
+      var self = this;
 
-      this.div = this.element.get(0);
-      this.element.addClass(opts.cssClasses);
+      this.element.addClass(this.options.cssClasses);
 
       /* Create necessary DOM elements for jquery ui tab widget */
-      var tabdiv = $('<div id="toolTabs">');
-      tabdiv.css('height', '100%')
-            .append($('<div id="toolTabsProperties"></div>'))
-            .append($('<div id="toolTabsLibrary"></div>'))
-            .appendTo(this.div);
-      var ul = $('<ul>');
-      ul.prependTo(tabdiv)
-        .append($('<li><a href="#toolTabsProperties">Properties</a></li>'))
-        .append($('<li><a href="#toolTabsLibrary">Library</a></li>'));
+      $('<div>').attr('id', 'toolTabs')
+                .css('height', '100%')
+                .append($('<div id="toolTabsProperties"></div>'))
+                .append($('<div id="toolTabsLibrary"></div>'))
+                .appendTo(this.element);
+      $('<ul>').prependTo('#toolTabs')
+               .append($('<li><a href="#toolTabsProperties">Properties</a></li>'))
+               .append($('<li><a href="#toolTabsLibrary">Library</a></li>'));
 
       /* Make it a widget */
       $('#toolTabs').tabs();
 
-      /* Prep the tool library widget */
+      /* Prep each of the tool tabs */
       $('#toolTabsLibrary').toollibrary();
+      $('#toolTabsProperties').toolproperties();
 
       /* Start watching resize events */
       $(window).resize(function() {

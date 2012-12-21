@@ -10,35 +10,29 @@
     },
 
     _create: function() {
-      var opts = this.options,
-          self = this;
+      var self = this;
 
-      this.div = this.element.get(0);
-      this.element.addClass(opts.cssClasses);
-      this.element.css('height', '100%');
+      this.element.addClass(this.options.cssClasses)
+                  .css('height', '100%');
 
       /* Prepare content for accordion view */
-      var accdiv = $('<div id="toolLibraryAccordion">');
-      accdiv.css('height', '100%')
-            .append($('<h3>Objects</h3>'))
-            .append($('<div id="toolLibraryObjects">'))
-            .append($('<h3>Floors</h3>'))
-            .append($('<div id="toolLibraryFloors">'))
-            .appendTo(this.div);
-
-      /* Now make it an accordian */
-      $('#toolLibraryAccordion').accordion();
+      $('<div>').attr('id', 'toolLibraryAccordion')
+                .append($('<h3>Objects</h3>'))
+                .append($('<div id="toolLibraryObjects">'))
+                .append($('<h3>Floors</h3>'))
+                .append($('<div id="toolLibraryFloors">'))
+                .appendTo(this.element)
+                .accordion({ heightStyle: "content" });
 
       /* Draw some sample selectables */
-      var sol = $('<ol id="selectable">');
-      sol.css('list-style-type', 'none')
-         .css('margin', '0')
-         .css('padding', '0')
-         .append($('<li class="ui-widget-content">Foo</li>'))
-         .appendTo($('#toolLibraryObjects'));
-      $('#selectable').selectable();
+      $('<ol>').attr('id', 'selectable')
+               .css('list-style-type', 'none')
+               .css('margin', '0')
+               .css('padding', '0')
+               .append($('<li class="ui-widget-content">Foo</li>'))
+               .appendTo($('#toolLibraryObjects'))
+               .selectable();
       
-
       /* Start watching resize events */
       $(window).resize(function() {
         self._resize();
