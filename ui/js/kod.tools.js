@@ -12,7 +12,13 @@
     _create: function() {
       var self = this;
 
-      this.element.addClass(this.options.cssClasses);
+      this.element.addClass(this.options.cssClasses)
+                  .css('position', 'absolute')
+                  .css('z-index', 22)
+                  .css('top', '10px')
+                  .css('right', '10px')
+                  .css('height', '95%')
+                  .css('width', '34%');
 
       /* Create necessary DOM elements for jquery ui tab widget */
       $('<div>').attr('id', 'toolTabs')

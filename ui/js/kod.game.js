@@ -17,24 +17,22 @@
 
       this.div = this.element.get(0);
 
-      /* Create mapview and tools area on screen */
-      var mapViewDiv = $('<div>');
-      mapViewDiv.addClass('kod-mapviewdiv kod-noboxmodel')
-                .appendTo(this.div);
+      $('<canvas>').attr('id', 'mapview')
+                   .css('height', '100%')
+                   .css('width', '100%')
+                   .css('vertical-align', 'top')
+                   .appendTo(this.element)
+                   .mapview()
+                   .height = parseInt($('#mapview').css("height"), 10)
+                   .width = parseInt($('#mapview').css("width"), 10);
 
-      this.mapView = $('<canvas id="mapview"/>');
-      this.mapView.appendTo(mapViewDiv)
-        .mapview()
-        .height = parseInt(this.mapView.css("height"), 10)
-        .width = parseInt(this.mapView.css("width"), 10);
+      $('<div>').attr('id', 'statusbar')
+                .appendTo(this.element)
+                .statusbar();
 
-      var sdiv = $('<div id="statusbar"/>');
-      sdiv.appendTo(this.div)
-          .statusbar();
-
-      var tdiv = $('<div id="tools"/>');
-      tdiv.appendTo(this.div)
-          .tools();
+      $('<div>').attr('id', 'tools')
+                .appendTo(this.element)
+                .tools();
 
       this.client = new Client();
       this.images = {};
@@ -138,10 +136,10 @@
       var self = this;
 
       this.client.on("create view", 1, function(pld) {
-        var v = self.mapView;
+        var v = $('#mapview');
         self.client.sendCommand("register view", 1, {
-          "width": self.mapView.mapview('option', 'tilesWidth'),
-          "height": self.mapView.mapview('option', 'tilesHeight')
+          "width": v.mapview('option', 'tilesWidth'),
+          "height": v.mapview('option', 'tilesHeight')
         });
       });
 
@@ -151,7 +149,7 @@
 
         self._loadImages(pld.images, function() {
           log('all images loaded', {"image_count":pld.images.length});
-          self.mapView.mapview('drawView', pld.view);
+          $('#mapview').mapview('drawView', pld.view);
         });
       });
     },

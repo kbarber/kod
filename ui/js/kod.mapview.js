@@ -33,7 +33,10 @@
 
       this.canvas = this.element.get(0);
       this.game = $(":kod-game");
-      this.element.addClass(opts.cssClasses);
+      this.element.addClass(opts.cssClasses)
+                  .css('height', '100%')
+                  .css('width', '100%')
+                  .css('vertical-align', 'top');
 
       /* Create some hidden canvas for blitting */
       this.tileCanvas = createBlitCanvas(this.element);

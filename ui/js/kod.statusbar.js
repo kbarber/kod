@@ -12,7 +12,14 @@
     _create: function() {
       var self = this;
 
-      this.element.addClass(this.options.cssClasses);
+      this.element.addClass(this.options.cssClasses)
+                  .css('background-color', 'black')
+                  .css('position', 'absolute')
+                  .css('z-index', 22)
+                  .css('bottom', '10px')
+                  .css('left', '10px')
+                  .css('height', '22px')
+                  .css('width', '120px')
                   .append($('<span id="statusBarMouseX">X: </span>'))
                   .append($('<span id="statusBarMouseY">Y: </span>'));
 

@@ -1,9 +1,0 @@
-.kod-statusbar {
-  background-color: black;
-  position: absolute;
-  z-index: 22;
-  bottom: 10px;
-  left: 10px;
-  height: 22px;
-  width: 120px;
-}
