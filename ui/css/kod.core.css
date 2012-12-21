@@ -1,11 +1,7 @@
-/* I need to be absolute about this stuff everywhere */
-body,canvas,img,div {
+body {
   margin: 0;
   border: 0;
   padding: 0;
-}
-
-body {
   background-color: black;
   color: white;
   overflow: hidden; /* remove scrollbars */
