@@ -1,20 +1,27 @@
 (function($, undefined) {
-  $.widget('kod.toolproperties', {
+  $.widget('kod.props', {
     version: "@VERSION",
 
     defaultElement: "<div>",
 
     options: {
       /* css classes that get applied to our element */
-      cssClasses: 'kod-toolproperties kod-noboxmodel',
+      cssClasses: 'kod-props kod-noboxmodel',
     },
 
     _create: function() {
       var self = this;
 
       this.element.addClass(this.options.cssClasses)
-                  .css('height', '100%')
-                  .html('<p><span>Floor:</span> <span id="propertyFloor"></span></p>');
+                  .html('<p><span>Floor:</span> <span id="propertyFloor"></span></p>')
+                  .dialog({
+                    title: 'Properties',
+                    position: {
+                      at: "right top"
+                    },
+                    height: 100,
+                    autoOpen: false
+                  });
 
       /* Start watching resize events */
       $(window).resize(function() {

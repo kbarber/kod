@@ -1,12 +1,12 @@
 (function($, undefined) {
-  $.widget('kod.toollibrary', {
+  $.widget('kod.medialibrary', {
     version: "@VERSION",
 
     defaultElement: "<div>",
 
     options: {
       /* css classes that get applied to our element */
-      cssClasses: 'kod-toollibrary kod-noboxmodel',
+      cssClasses: 'kod-medialibrary kod-noboxmodel',
     },
 
     _create: function() {
@@ -16,11 +16,11 @@
                   .css('height', '100%');
 
       /* Prepare content for accordion view */
-      $('<div>').attr('id', 'toolLibraryAccordion')
+      $('<div>').attr('id', 'mediaLibraryAccordion')
                 .append($('<h3>Objects</h3>'))
-                .append($('<div id="toolLibraryObjects">'))
+                .append($('<div id="mediaLibraryObjects">'))
                 .append($('<h3>Floors</h3>'))
-                .append($('<div id="toolLibraryFloors">'))
+                .append($('<div id="mediaLibraryFloors">'))
                 .appendTo(this.element)
                 .accordion({ heightStyle: "content" });
 
@@ -30,7 +30,7 @@
                .css('margin', '0')
                .css('padding', '0')
                .append($('<li class="ui-widget-content">Foo</li>'))
-               .appendTo($('#toolLibraryObjects'))
+               .appendTo($('#mediaLibraryObjects'))
                .selectable();
       
       /* Start watching resize events */

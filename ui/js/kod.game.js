@@ -29,14 +29,19 @@
                 .appendTo(this.element)
                 .statusbar();
 
-      $('<div>').attr('id', 'tools')
+      $('<div>').attr('id', 'props')
+                .appendTo(this.element)
+                .props();
+
+      $('<div>').attr('id', 'toolbar')
                 .hide()
                 .appendTo(this.element)
-                .tools();
+                .toolbar();
 
       $('<div>').attr('id', 'loginPrompt')
                 .appendTo(this.element)
                 .loginprompt();
+
 
       this.images = {};
 
@@ -61,13 +66,14 @@
      * Login
      */
     login: function(username, password) {
+      /* Create client and register commands */
       this.client = new Client(username, password);
       this._registerCommands();
 
       /* Show elements */
-      $('#tools').show();
       $('#statusbar').show();
       $('#mapview').show();
+      $('#toolbar').show();
     },
 
     /**

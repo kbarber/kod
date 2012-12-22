@@ -42,15 +42,11 @@
       this.tileCanvas = createBlitCanvas(this.element);
       this.pointerCanvas = createBlitCanvas(this.element);
       this.selectedCanvas = createBlitCanvas(this.element);
-      this.watermarkCanvas = createBlitCanvas(this.element);
 
       this.ctxView = this.canvas.getContext("2d");
       this.ctxTile = this.tileCanvas.getContext("2d");
       this.ctxPointer = this.pointerCanvas.getContext("2d");
       this.ctxSelected = this.selectedCanvas.getContext("2d");
-      this.ctxWatermark = this.watermarkCanvas.getContext("2d");
-
-      this._drawWatermark();
 
       /* Report mouse status */
       this.element.mousemove(function(evt) {
@@ -74,17 +70,6 @@
         self._resize();
       });
       this._resize();
-    },
-
-    _drawWatermark: function() {
-      /* Draw watermark title in canvas */
-      this.ctxWatermark.fillStyle = "white";
-      this.ctxWatermark.font = "bold 18px century gothic";
-      this.ctxWatermark.shadowColor = "red";
-      this.ctxWatermark.shadowOffsetX = 0;
-      this.ctxWatermark.shadowOffsetY = 0;
-      this.ctxWatermark.shadowBlur = 10;
-      this.ctxWatermark.fillText("Knights of Dischord", 10, 20);
     },
 
     _drawTile: function(obj, x, y) {
@@ -115,7 +100,6 @@
       this.ctxView.drawImage(this.tileCanvas, 0, 0);
       this.ctxView.drawImage(this.selectedCanvas, 0, 0);
       this.ctxView.drawImage(this.pointerCanvas, 0, 0);
-      this.ctxView.drawImage(this.watermarkCanvas, 0, 0);
     },
 
     _setOption: function(name, value) {
@@ -152,7 +136,8 @@
       ctx.clearRect(0, 0, this.selectedCanvas.width, this.selectedCanvas.height);
       ctx.strokeRect(tilex * ts, tiley * ts, ts, ts);
 
-      $(':kod-toolproperties').toolproperties('showTile', this.lastView[tiley][tilex]);
+      $(':kod-props').dialog('open');
+      $(':kod-props').props('showTile', this.lastView[tiley][tilex]);
       this._paint();
     },
 
@@ -174,10 +159,6 @@
           this.tileCanvas.height = h;
           this.tileCanvas.width = w;
         }
-        if(this.watermarkCanvas) {
-          this.watermarkCanvas.height = h;
-          this.watermarkCanvas.width = w;
-        }
         if(this.pointerCanvas) {
           this.pointerCanvas.height = h;
           this.pointerCanvas.width = w;
@@ -187,7 +168,6 @@
           this.selectedCanvas.width = w;
         }
 
-        this._drawWatermark();
         if(this.lastView) {
           log('redrawing mapview');
           this.drawView(this.lastView);
