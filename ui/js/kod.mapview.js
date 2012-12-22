@@ -64,7 +64,7 @@
       });
 
       this.element.mousedown(function(evt) {
-        if(evt.button == 0) {
+        if(evt.button === 0) {
           self._selected(evt.pageX, evt.pageY);
         }
       });
