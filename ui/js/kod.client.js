@@ -1,29 +1,25 @@
 /**
  * Client connection object.
- *
- * @param {String} [url] WebSocket URL, defaults to requested
- *                       hostname and port.
  */
-function Client(url) {
+function Client(username, password) {
   var self = this;
 
   this.commands = new Commands();
 
-  if(!url) { url = "ws://" + window.document.location.host; }
-  this.url = url;
+  this.url = "ws://" + window.document.location.host;
 
   log('connecting to server', {"url":this.url});
 
   this.ws = new WebSocket(this.url);
   this.ws.onopen = function() {
-    log('socket open', {"url":url});
-    self.login("ken", "ken");
+    log('socket open', {"url":this.url});
+    self.login(username, password);
   };
   this.ws.onerror = function() {
-    log('unable to open socket', {"url": url});
+    log('unable to open socket', {"url": this.url});
   };
   this.ws.onclose = function() {
-    log('websocket closed', {"url": url});
+    log('websocket closed', {"url": this.url});
   };
   this.ws.onmessage = function(msg) {
     var json;
@@ -32,7 +28,7 @@ function Client(url) {
     } catch(e) {
       log('ws message invalid json', {"data": msg.data});
     }
-    log('received message', {"url": url, "message": json});
+    log('received message', {"url": this.url, "message": json});
 
     if(json.c && json.v && json.p) {
       self.rcvCommand(json.c, json.v, json.p);

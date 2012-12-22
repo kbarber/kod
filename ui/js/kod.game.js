@@ -10,31 +10,34 @@
     },
 
     _create: function() {
-      var opts = this.options,
-          self = this;
+      var self = this;
 
-      this.element.addClass(opts.cssClasses);
-
-      this.div = this.element.get(0);
+      this.element.addClass(this.options.cssClasses);
 
       $('<canvas>').attr('id', 'mapview')
                    .css('height', '100%')
                    .css('width', '100%')
                    .css('vertical-align', 'top')
+                   .hide()
                    .appendTo(this.element)
                    .mapview()
                    .height = parseInt($('#mapview').css("height"), 10)
                    .width = parseInt($('#mapview').css("width"), 10);
 
       $('<div>').attr('id', 'statusbar')
+                .hide()
                 .appendTo(this.element)
                 .statusbar();
 
       $('<div>').attr('id', 'tools')
+                .hide()
                 .appendTo(this.element)
                 .tools();
 
-      this.client = new Client();
+      $('<div>').attr('id', 'loginPrompt')
+                .appendTo(this.element)
+                .loginprompt();
+
       this.images = {};
 
       $(window).resize(function() {
@@ -45,8 +48,6 @@
       document.onkeydown = function(ev) {
         self._handleKeys(ev);
       };
-
-      this._registerCommands();
     },
 
     /**
@@ -54,6 +55,19 @@
      */
     getImages: function() {
       return this.images;
+    },
+
+    /**
+     * Login
+     */
+    login: function(username, password) {
+      this.client = new Client(username, password);
+      this._registerCommands();
+
+      /* Show elements */
+      $('#tools').show();
+      $('#statusbar').show();
+      $('#mapview').show();
     },
 
     /**
@@ -95,11 +109,12 @@
      * of the game div to ensure we keep fixed width and height.
      */
     _resize: function() {
+      var div = this.element.get(0);
       var h = window.innerHeight + 'px';
       var w = window.innerWidth + 'px';
 
-      this.div.style.height = h;
-      this.div.style.width = w;
+      div.style.height = h;
+      div.style.width = w;
 
       log('window resized', {"h": h, "w": w}); 
     },
