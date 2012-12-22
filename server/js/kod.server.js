@@ -11,9 +11,9 @@ function Server(port) {
       app = express();
 
   app.configure(function() {
-    app.use(express.static(__dirname + '/server/public'));
+    app.use(express.static(__dirname + '/public'));
     app.set('view engine', 'ejs');
-    app.set('views', __dirname + '/server/views');
+    app.set('views', __dirname + '/views');
   });
 
   app.get("/status", function(req, res) {

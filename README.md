@@ -1,4 +1,4 @@
-## Running
+## Quick Start
 
 Since there is no established 'distribution' yet, these instructions are the
 same for developers and users.
@@ -11,4 +11,12 @@ Then browse to: <http://localhost:7777>
 
 ## Lint
 
-    # grunt
+    # grunt lint
+
+## Create a tarball
+
+    # grunt package
+
+## Clean
+
+    # grunt clean

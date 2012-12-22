@@ -13,9 +13,9 @@
       var self = this;
 
       /* Construct login form */
-      var form = $('<form>')
-      form.attr('id', 'loginForm')
-      var fieldset = $('<fieldset>')
+      var form = $('<form>');
+      form.attr('id', 'loginForm');
+      var fieldset = $('<fieldset>');
       fieldset.appendTo(form)
               .append('<label for="username">Username:</label>')
               .append('<input type="text" name="username" id="username" maxlength="50" />')
