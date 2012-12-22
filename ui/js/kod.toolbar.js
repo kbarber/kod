@@ -20,7 +20,10 @@
             .css('height', '40px')
             .css('width', '40px')
             .attr('title', 'Selection tool')
-            .tooltip();
+            .tooltip()
+            .click(function() {
+              $(':kod-mapview').mapview('setToolSelect');
+            });
 
       /* Floor paint */
       var floor = $('<button id="floorButton">');
@@ -31,7 +34,10 @@
            .css('background-image', 'url(img/grass.png)')
            .css('background-repeat', 'no-repeat')
            .attr('title', 'Floor painting tool')
-           .tooltip();
+           .tooltip()
+           .click(function() {
+             $(':kod-mapview').mapview('setToolFloor');
+           });
       var floorDrop = $('<button id="floorButtonDrop">');
       floorDrop.css('height', '40px')
                .css('width', '40px')
@@ -40,6 +46,8 @@
                  icons: {
                    primary: "ui-icon-triangle-1-s"
                  }
+               })
+               .click(function() {
                });
       var floorCombo = $('<div>');
       floorCombo.append(floor)
@@ -55,7 +63,9 @@
          .css('background-image', 'url(img/chest.png)')
          .css('background-repeat', 'no-repeat')
          .attr('title', 'Object placement tool')
-         .tooltip();
+         .tooltip()
+         .click(function() {
+         });
       var objDrop = $('<button id="objButtonDrop">');
       objDrop.css('height', '40px')
              .css('width', '40px')
@@ -64,6 +74,8 @@
                icons: {
                  primary: "ui-icon-triangle-1-s"
                }
+             })
+             .click(function() {
              });
       var objCombo = $('<div>');
       objCombo.append(obj)

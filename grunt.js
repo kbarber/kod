@@ -8,11 +8,15 @@ module.exports = function(grunt) {
     concat: {
       ui: {
         src: ['ui/js/**.js'],
-        dest: 'public/js/kod.js'
+        dest: 'server/public/js/kod.js'
       },
       css: {
         src: ['ui/css/**.css'],
-        dest: 'public/css/kod.css'
+        dest: 'server/public/css/kod.css'
+      },
+      server: {
+        src: ['server/js/**.js'],
+        dest: 'server.js'
       }
     },
     lint: {

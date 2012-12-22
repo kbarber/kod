@@ -2,5 +2,6 @@ node_modules
 .*.swp
 out
 npm-debug.log
-public/js/kod.js
-public/css/kod.css
+server/public/js/kod.js
+server/public/css/kod.css
+server.js

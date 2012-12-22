@@ -13,13 +13,15 @@
       var self = this;
 
       this.element.addClass(this.options.cssClasses)
-                  .html('<p><span>Floor:</span> <span id="propertyFloor"></span></p>')
+                  .append('<p><span>X:</span> <span id="propertyX"></span></p>')
+                  .append('<p><span>Y:</span> <span id="propertyY"></span></p>')
+                  .append('<p><span>Floor:</span> <span id="propertyFloor"></span></p>')
                   .dialog({
                     title: 'Properties',
                     position: {
                       at: "right top"
                     },
-                    height: 100,
+                    height: 300,
                     autoOpen: false
                   });
 
@@ -32,6 +34,8 @@
 
     showTile: function(tile) {
       $('#propertyFloor').text(tile.tile.floor);
+      $('#propertyX').text(tile.x);
+      $('#propertyY').text(tile.y);
     },
 
     _setOption: function(name, value) {

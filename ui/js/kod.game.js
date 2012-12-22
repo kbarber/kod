@@ -77,6 +77,13 @@
     },
 
     /**
+     * Send command via client
+     */
+    sendCommand: function(cmd, ver, pld) {
+      this.client.sendCommand(cmd, ver, pld);
+    },
+
+    /**
      * Load an image, call 'func()' when done.
      * TODO: look into jquery event handling here 
      */

@@ -65,6 +65,8 @@
         }
       });
 
+      this.setToolSelect();
+
       /* Start watching resize events */
       $(window).resize(function() {
         self._resize();
@@ -125,20 +127,37 @@
       this._paint();
     },
 
-    _selected: function(x, y) {
-      var ctx = this.ctxSelected;
-      ctx.strokeStyle = '#FFFFFF';
-      ctx.lineWidth = 2;
+    setToolSelect: function() {
+      this.toolFunc = function(x, y, tileData) {
+        var ts = this.options.tileSize;
+        var ctx = this.ctxSelected;
+        ctx.strokeStyle = '#FFFFFF';
+        ctx.lineWidth = 2;
 
+        ctx.clearRect(0, 0, this.selectedCanvas.width, this.selectedCanvas.height);
+        ctx.strokeRect(x * ts, y * ts, ts, ts);
+
+        $(':kod-props').dialog('open');
+        $(':kod-props').props('showTile', tileData);
+        this._paint();
+      };
+    },
+
+    setToolFloor: function() {
+      this.toolFunc = function(x, y, tileData) {
+        tileData.tile.floor = "grass";
+        $(':kod-game').game('sendCommand', 'change tile', 1, tileData);
+      };
+    },
+
+    _selected: function(x, y) {
       var ts = this.options.tileSize;
       var tilex = Math.floor(x / ts);
       var tiley = Math.floor(y / ts);
-      ctx.clearRect(0, 0, this.selectedCanvas.width, this.selectedCanvas.height);
-      ctx.strokeRect(tilex * ts, tiley * ts, ts, ts);
+      var tileData = this.lastView[tiley][tilex];
 
-      $(':kod-props').dialog('open');
-      $(':kod-props').props('showTile', this.lastView[tiley][tilex]);
-      this._paint();
+      this.toolFunc(x, y, tileData);
+
     },
 
     _resize: function() {
