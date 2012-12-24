@@ -5,7 +5,6 @@
   function createBlitCanvas(orig) {
     var o = orig.get(0),
         c = document.createElement('canvas');
-    log('creating new blit canvas', {w: o.width, h: o.height});
     c.width = o.width;
     c.height = o.height;
 
@@ -99,6 +98,8 @@
     },
 
     _paint: function() {
+      /* Clear the canvas first */
+      this.ctxView.clearRect(0, 0, this.canvas.width, this.canvas.height);
       this.ctxView.drawImage(this.tileCanvas, 0, 0);
       this.ctxView.drawImage(this.selectedCanvas, 0, 0);
       this.ctxView.drawImage(this.pointerCanvas, 0, 0);
@@ -136,10 +137,10 @@
 
         ctx.clearRect(0, 0, this.selectedCanvas.width, this.selectedCanvas.height);
         ctx.strokeRect(x * ts, y * ts, ts, ts);
+        this._paint();
 
         $(':kod-props').dialog('open');
         $(':kod-props').props('showTile', tileData);
-        this._paint();
       };
     },
 
@@ -156,8 +157,7 @@
       var tiley = Math.floor(y / ts);
       var tileData = this.lastView[tiley][tilex];
 
-      this.toolFunc(x, y, tileData);
-
+      this.toolFunc(tilex, tiley, tileData);
     },
 
     _resize: function() {
