@@ -47,6 +47,8 @@
                    primary: "ui-icon-triangle-1-s"
                  }
                })
+               .attr('title', 'Select a floor')
+               .tooltip()
                .click(function() {
                });
       var floorCombo = $('<div>');
@@ -75,6 +77,8 @@
                  primary: "ui-icon-triangle-1-s"
                }
              })
+             .attr('title', 'Select an object')
+             .tooltip()
              .click(function() {
              });
       var objCombo = $('<div>');

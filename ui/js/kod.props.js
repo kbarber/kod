@@ -21,7 +21,8 @@
                     position: {
                       at: "right top"
                     },
-                    height: 300,
+                    height: 200,
+                    width: 200,
                     autoOpen: false
                   });
 
