@@ -103,6 +103,10 @@
      */
     _loadImages: function(images, func) {
       var icount = images.length;
+      if(icount <= 0) {
+        func();
+        return null;
+      }
 
       /** 
        * A function for counting down image loads and executing a callback when
@@ -110,7 +114,7 @@
        */
       var imageLoaded = function() {
         --icount;
-        if(icount === 0) {
+        if(icount <= 0) {
           func();
         }   
       };  

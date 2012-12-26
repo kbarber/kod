@@ -87,7 +87,9 @@
           var cell = row[x];
           var floor = cell.tile.floor;
 
-          this._drawTile(images[floor], x, y);
+          if(images[floor]) {
+            this._drawTile(images[floor], x, y);
+          };
         }
       }
       this._paint();
