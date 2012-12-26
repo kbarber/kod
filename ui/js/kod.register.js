@@ -1,12 +1,12 @@
 (function($, undefined) {
-  $.widget('kod.loginprompt', {
+  $.widget('kod.register', {
     version: "@VERSION",
 
     defaultElement: "<div>",
 
     options: {
       /* css classes that get applied to our element */
-      cssClasses: 'kod-loginprompt kod-noboxmodel',
+      cssClasses: 'kod-register kod-noboxmodel',
     },
 
     _create: function() {
@@ -14,38 +14,33 @@
 
       /* Construct login form */
       var form = $('<form>');
-      form.attr('id', 'loginForm');
+      form.attr('id', 'registerForm');
       var fieldset = $('<fieldset>');
       fieldset.appendTo(form)
-              .append('<label for="username">Username:</label>')
-              .append('<input type="text" name="username" id="username" maxlength="50" />')
+              .append('<label for="username">Email:</label>')
+              .append('<input type="text" name="email" id="email" maxlength="50" />')
               .append('<label for="password">Password:</label>')
-              .append('<input type="password" name="password" id="password" maxlength="50" />');
+              .append('<input type="password" name="password" id="password" maxlength="50" />')
+              .append('<label for="password">Repeat:</label>')
+              .append('<input type="password" name="passwordRepeat" id="passwordRepeat" maxlength="50" />');
 
       this.element.addClass(this.options.cssClasses)
                   .css('margin', 'auto')
                   .append(form)
                   .dialog({
+                    autoOpen: false,
                     modal: true,
-                    closeOnEscape: false,
+                    closeOnEscape: true,
                     draggable: false,
                     resizable: false,
-                    title: 'Login',
+                    title: 'Register',
+                    show: 'explode',
                     hide: 'explode',
-                    open: function(event, ui) { // hide close button
-                      $(".ui-dialog-titlebar-close", $(this).parent()).hide();
-                    },
                     buttons: [
                       {
                         text: "Register",
                         click: function () {
                           self._register();
-                        }
-                      },
-                      {
-                        text: "Login",
-                        click: function () {
-                          self._login();
                         }
                       }
                     ]
@@ -58,20 +53,7 @@
       this._resize();
     },
 
-    _login: function() {
-      var username = $('#username').val();
-      var password = $('#password').val();
-      log('login attempt', {username: username, password: password});
-
-      // Call game login
-      $(':kod-game').game('login', username, password);
-
-      // Now close the dialog
-      this.element.dialog('close');
-    },
-
     _register: function() {
-      $(':kod-register').dialog('open');
     },
 
     _setOption: function(name, value) {

@@ -42,6 +42,10 @@
                 .appendTo(this.element)
                 .loginprompt();
 
+      $('<div>').attr('id', 'registerPrompt')
+                .hide()
+                .appendTo(this.element)
+                .register();
 
       this.images = {};
 
