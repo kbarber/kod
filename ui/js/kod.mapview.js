@@ -89,7 +89,7 @@
 
           if(images[floor]) {
             this._drawTile(images[floor], x, y);
-          };
+          }
         }
       }
       this._paint();

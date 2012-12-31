@@ -2,7 +2,7 @@
   "name": "kod",
   "version": "0.0.1",
   "scripts": {
-    "start": "grunt fastbuild && pushd build && node server && popd"
+    "start": "grunt fastbuild && pushd cljserver && lein trampoline run && popd"
   },
   "dependencies": {
     "express": "~3.0.0",

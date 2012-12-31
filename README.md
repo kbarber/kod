@@ -13,10 +13,6 @@ Then browse to: <http://localhost:7777>
 
     # grunt lint
 
-## Create a tarball
-
-    # grunt package
-
 ## Clean
 
     # grunt clean

@@ -8,21 +8,16 @@ module.exports = function(grunt) {
     concat: {
       uijs: {
         src: ['ui/js/**.js'],
-        dest: 'build/public/js/kod.js'
+        dest: 'cljserver/public/js/kod.js'
       },
       uicss: {
         src: ['ui/css/**.css'],
-        dest: 'build/public/css/kod.css'
-      },
-      serverjs: {
-        src: ['server/js/**.js'],
-        dest: 'build/server.js'
+        dest: 'cljserver/public/css/kod.css'
       }
     },
     lint: {
       core: ['grunt.js'],
-      ui: ['ui/js/**.js'],
-      server: ['server/js/**.js']
+      ui: ['ui/js/**.js']
     },
     jshint: {
       options: {
@@ -31,7 +26,7 @@ module.exports = function(grunt) {
       }
     },
     htmllint: {
-      all: ["server/public/**.html"]
+      all: ["ui/public/**.html"]
     },
     csslint: {
       ui: {
@@ -39,16 +34,15 @@ module.exports = function(grunt) {
       }
     },
     copy: {
-      build: {
+      pub: {
         files: {
-          "build/views/": "server/views/**",
-          "build/public/": "server/public/**"
+          "cljserver/public/": "ui/public/**"
         }
       }
     },
     clean: {
-      build: ['build'],
-      jsdoc: ['out'],
+      build: ['cljserver/public'],
+      jsdoc: ['out']
     },
     compress: {
       tar: {
@@ -69,8 +63,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-compress');
 
   grunt.registerTask("default", "lint csslint htmllint");
-  grunt.registerTask("lint", "lint csslint htmllint");
-  grunt.registerTask("build", "default clean:build concat copy:build");
-  grunt.registerTask("fastbuild", "concat copy:build");
+  grunt.registerTask("build", "default clean:build concat copy:pub");
+  grunt.registerTask("fastbuild", "concat copy:pub");
   grunt.registerTask("package", "build compress");
 };
