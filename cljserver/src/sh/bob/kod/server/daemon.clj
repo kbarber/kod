@@ -25,10 +25,10 @@
       (.add "/websocket"
         (proxy [WebSocketHandler] []
           (onOpen [c] (do
-                  (log/debug (format "opened: %s" c))
+                  (log/debug "websocket opened" {:channel c})
                   (swap! chanels conj c)))
           (onClose [c] (do
-                   (log/debug (format "closed: %s" c))
+                   (log/debug "websocket closed" {:channel c})
                    (swap! chanels (fn [v] (remove #(= %1 c) v)))))
           (onMessage [c j] (on-message c j))))
       (.add (StaticFileHandler. "./public"))
