@@ -1,7 +1,8 @@
 (ns sh.bob.kod.server.daemon
   (:use clojure.walk)
   (:require [clojure.data.json :as json]
-            [sh.bob.kod.server.cmds :as cmds])
+            [sh.bob.kod.server.cmds :as cmds]
+            [sh.bob.kod.server.log :as log])
   (:import [org.webbitserver WebServer WebServers WebSocketHandler]
            [org.webbitserver.handler StaticFileHandler]))
 
@@ -24,10 +25,10 @@
       (.add "/websocket"
         (proxy [WebSocketHandler] []
           (onOpen [c] (do
-                  (prn "opened" c)
+                  (log/debug (format "opened: %s" c))
                   (swap! chanels conj c)))
           (onClose [c] (do
-                   (prn "closed" c)
+                   (log/debug (format "closed: %s" c))
                    (swap! chanels (fn [v] (remove #(= %1 c) v)))))
           (onMessage [c j] (on-message c j))))
       (.add (StaticFileHandler. "./public"))
