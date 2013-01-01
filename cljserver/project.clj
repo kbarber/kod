@@ -6,5 +6,6 @@
   :dependencies [[org.clojure/clojure "1.4.0"]
                  [org.webbitserver/webbit "0.4.14"]
                  [org.clojure/data.json "0.2.1"]
-                 [ns-tracker "0.2.0"]]
+                 [ns-tracker "0.2.0"]
+                 [com.novemberain/monger "1.4.1"]]
   :main sh.bob.kod.server.core)

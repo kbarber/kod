@@ -6,7 +6,7 @@ function Client(username, password) {
 
   this.commands = new Commands();
 
-  this.url = "ws://" + window.document.location.host;
+  this.url = "ws://" + window.document.location.host + '/websocket';
 
   log('connecting to server', {"url":this.url});
 
